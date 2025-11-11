@@ -1,0 +1,347 @@
+body {
+    margin: 0;
+    background: #111;
+    color: white;
+    font-family: Arial, sans-serif; 
+}
+
+.header{
+    display: flex;
+    align-items: center;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 12px 10px;
+    background: #0d0d0d;
+}
+
+.topbar{
+    background: #000;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logoarea{
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.logoimg{
+    width: 130px;
+    height:auto;
+}
+
+.topmenu a{
+    margin: 0 15px;
+    font-size: 16px;
+    color: #ccc;
+    text-decoration: none;
+}
+
+.topmenu a:hover{
+    color: #66ff66;
+}
+
+.searchbox {
+    position: relative;
+    margin-left: auto;
+}
+
+.searchbox input {
+    padding: 8px 30px 8px 10px;
+    border-radius: 6px;
+    border: none;
+    background: #2c2c2c;
+    color: white;
+}
+
+.searchicon {
+    position: absolute;
+    right: 10px;
+    top: 7px;
+}
+
+
+.menu{
+    display: flex;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 12px 10px;
+    background: #1a1a1a;
+}
+
+.menu a{
+    color: #ccc;
+    margin-right: 25px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.menu a:hover{
+    color: #66ff66;
+}
+
+.movielist{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+}
+
+.movieitem{
+    padding: 0;
+    margin: 0;
+    position: relative;
+}
+
+.movieitem img{
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    object-fit: cover;
+    transition: 0.3s;
+    aspect-ratio: 140/200;
+}
+
+.movieitem img:hover{
+    transform: scale(1.05);
+}
+
+.movieitem p{
+    font-size: 14px;
+    margin-top: 6px;
+}
+
+.movieitem p:hover{
+    color:#66ff66;
+}
+
+.todaybox{
+    background: #141414;
+    padding: 15px;
+    border-radius: 8px;
+    margin-left: 0px;
+}
+
+.todaybox h2{
+    color: #fff;
+    margin-bottom: 15px;
+    font-size: 18px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #333;
+}
+
+.todayitem{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #1b1b1b;
+    padding: 8px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.container{
+    display: grid;
+    grid-template-columns: 1fr 240px;
+    gap: 15px;
+    padding-top: 20px;
+}
+
+.todayitem img{
+    width: 60px;
+    height: 85px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.todayitem .info h4{
+    margin: 0;
+    font-size: 14px;
+    color: #fff;
+}
+.todayitem .info h4:hover{
+    color: #66ff66;
+}
+.todayitem .info span{
+    color: #aaa;
+    font-size: 12px;
+}
+
+.todayitem .rank{
+    position: absolute;
+    right: 5px;
+    font-size: 20px;
+    color: #ccc;
+}
+
+.moviesection h2{
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.leftcontainer{
+    padding: 0px;
+    margin: 0;
+}
+
+.moviesection{
+    padding: 20px 0 0 0;
+    margin: 0;
+}
+
+.mainwrapper{
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 10px;
+}
+
+.overlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+.playicon{
+    font-size: 40px;
+    color: white;
+    border: 2px solid white;
+    border-radius: 50%;
+    padding: 10px 15px;
+    background: rgba(0,0,0,0.4);
+}
+
+.movieitem:hover .overlay{
+    opacity: 1;
+}
+
+.todayitem .info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.ratinginfo{
+    display: flex;
+    align-items: center;
+    margin-top: 2px;
+}
+
+.ratinginfo .star{
+    font-size: 10px;
+    margin-right: 3px;
+}
+
+.ratinginfor .score{
+    color: #ffc107;
+    font-size: 12px;
+    font-weight: bold;
+    margin-right: 0px;
+}
+
+.ratinginfo .year{
+    color: #aaa;
+    font-size: 12px;
+}
+
+.scorebox{
+    display: flex;
+    align-items: center;
+    background-color: rgba(0,0,0,0.4);
+    padding: 2px 5px;
+    border-radius: 4px;
+    margin-right: 8px;
+}
+
+.sitefooter{
+    background-color: #141414;
+    color: #aaa;
+    padding: 30px 0;
+    margin-top: 30px;
+}
+
+.footerwrapper{
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 10px;
+}
+
+.footerlogo img{
+    width: 150px;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.footertext p{
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.socialicon{
+    margin-top: 20px;
+}
+
+.socialicon a{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    color: #141414;
+    background-color: #ccc;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 8px;
+    text-decoration: none;
+    overflow: hidden;
+}
+
+.socialicon a img{
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+.socialicon a:hover{
+    background-color: #66ff66;
+}
+
+.footernav{
+    margin-top: 20px;
+}
+
+.footernav a{
+    color: #ccc;
+    text-decoration: none;
+    margin-right: 20px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.footernav a:hover{
+    color: #66ff66;
+}
+
+.footerdivider{
+    border: none;
+    border-top: 1px solid #333;
+    margin: 25px 0;
+}
+
+.footerlegal p{
+    font-size: 12px;
+    color: #777;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
