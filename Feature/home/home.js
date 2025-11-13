@@ -1,11 +1,12 @@
 document.addEventListener("DOMContentLoaded", function(){
-    const thungChuaPhim = document.getElementById("danhsachphimhan");
+    const thungChuaPhim = document.getElementById("danhSachPhimHan");
     if (!thungChuaPhim || !danhSachPhimHan || danhSachPhimHan.length === 0) {
         console.error("Không tìm thấy container hoặc danh sách phim trống.");
         return;
     }
     danhSachPhimHan.forEach(phim => {
         const movieItemHTML = `
+        <a href="chitietphim.html?id=${phim.id}">
             <div class="movieitem">
                 <img src="${phim.hinhAnh}" alt="${phim.tieuDe}">
                 <div class="overlay">
@@ -14,14 +15,17 @@ document.addEventListener("DOMContentLoaded", function(){
                 <p class="movietitle">${phim.tieuDe}</p>
                 <p class="moviesubtitle">${phim.phuDe}</p>
             </div>
+        </a>
         `;
         thungChuaPhim.innerHTML += movieItemHTML;
     });
+    
 
     const thungChuaXepHang =document.getElementById("danhSachXepHang");
     if(thungChuaXepHang && danhSachXepHang){
         danhSachXepHang.forEach(item => {
             const todayItemHTML=`
+            <a href="chitietphim.html?id=${item.id}">
             <div class="todayitem">
                 <img src="${item.hinhAnh}" alt="${item.tieuDe}">
                 <div class="info">
@@ -37,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 </div>
                 <div class="rank">${item.rank}</div>
             </div>
+            </a>
             `;
             thungChuaXepHang.innerHTML += todayItemHTML;
         })
