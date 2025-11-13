@@ -69,11 +69,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
             <div class="copyright-section">
             <div class="social-icons">
-                <a href="#"><img src="picture/fb.jpg" alt="Facebook"></a>
-                <a href="#"><img src="picture/zl.png" alt="Zalo"></a>
-                <a href="#"><img src="picture/yt.png" alt="Youtube"></a>
-                <a href="#"><img src="picture/gg.png" alt="Google Play"></a>
-                <a href="#"><img src="picture/appstore.png" alt="App Store"></a>
+                <a href="#"><img src="picture/fb.jpg" style="width: 45px !important; height: 45px !important;"></a>
+                <a href="#"><img src="picture/zl.png" style="width: 45px !important; height: 45px !important;"></a>
+                <a href="#"><img src="picture/yt.png"style="width: 60px !important; height: 45px !important;" ></a>
+                <a href="#"><img src="picture/gg.png" style="width: 85px !important; height: 45px !important;"></a>
+                <a href="#"><img src="picture/appstore.png" style="width: 100px !important; height: 45px !important;"></a>
                  </div>
             <div class="contact-info">
                 <p>Cơ quan chủ quản: BỘ VĂN HÓA, THỂ THAO VÀ DU LỊCH</p>
