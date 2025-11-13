@@ -14,7 +14,7 @@ body {
     background: #0d0d0d;
 }
 
-.topbar{
+.top-bar{
     background: #000;
     padding: 15px;
     display: flex;
@@ -22,34 +22,34 @@ body {
     align-items: center;
 }
 
-.logoarea{
+.logo-area{
     display: flex;
     align-items: center;
     gap: 30px;
 }
 
-.logoimg{
+.logo-img{
     width: 130px;
     height:auto;
 }
 
-.topmenu a{
+.top-menu a{
     margin: 0 15px;
     font-size: 16px;
     color: #ccc;
     text-decoration: none;
 }
 
-.topmenu a:hover{
+.top-menu a:hover{
     color: #66ff66;
 }
 
-.searchbox {
+.search-box {
     position: relative;
     margin-left: auto;
 }
 
-.searchbox input {
+.search-box input {
     padding: 8px 30px 8px 10px;
     border-radius: 6px;
     border: none;
@@ -57,7 +57,7 @@ body {
     color: white;
 }
 
-.searchicon {
+.search-icon {
     position: absolute;
     right: 10px;
     top: 7px;
@@ -83,19 +83,19 @@ body {
     color: #66ff66;
 }
 
-.movielist{
+.movie-list{
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 10px;
 }
 
-.movieitem{
+.movie-item{
     padding: 0;
     margin: 0;
     position: relative;
 }
 
-.movieitem img{
+.movie-item img{
     width: 100%;
     height: auto;
     border-radius: 6px;
@@ -104,27 +104,27 @@ body {
     aspect-ratio: 140/200;
 }
 
-.movieitem img:hover{
+.movie-item img:hover{
     transform: scale(1.05);
 }
 
-.movieitem p{
+.movie-item p{
     font-size: 14px;
     margin-top: 6px;
 }
 
-.movieitem p:hover{
+.movie-item p:hover{
     color:#66ff66;
 }
 
-.todaybox{
+.today-box{
     background: #141414;
     padding: 15px;
     border-radius: 8px;
     margin-left: 0px;
 }
 
-.todaybox h2{
+.today-box h2{
     color: #fff;
     margin-bottom: 15px;
     font-size: 18px;
@@ -132,7 +132,7 @@ body {
     border-bottom: 1px solid #333;
 }
 
-.todayitem{
+.today-item{
     display: flex;
     align-items: center;
     gap: 10px;
@@ -150,7 +150,7 @@ body {
     padding-top: 20px;
 }
 
-.todayitem img{
+.today-item img{
     width: 45px;
     height: 65px;
     object-fit: cover;
@@ -158,39 +158,39 @@ body {
     margin-right: 10px;
 }
 
-.todayitem .info h4{
+.today-item .info h4{
     margin-bottom: 2px;
     font-size: 14px;
     color: #fff;
 }
 
-.todayitem .info h4:hover{
+.today-item .info h4:hover{
     color: #66ff66;
 }
 
-.todayitem .rank{
+.today-item .rank{
     position: absolute;
     right: 5px;
     font-size: 20px;
     color: #ccc;
 }
 
-.moviesection h2{
+.movie-section h2{
     font-size: 20px;
     margin-bottom: 20px;
 }
 
-.leftcontainer{
+.left-container{
     padding: 0px;
     margin: 0;
 }
 
-.moviesection{
+.movie-section{
     padding: 20px 0 0 0;
     margin: 0;
 }
 
-.mainwrapper{
+.main-wrapper{
     max-width: 1300px;
     margin: 0 auto;
     padding: 0 10px;
@@ -212,7 +212,7 @@ body {
     border-radius: 6px;
 }
 
-.playicon{
+.play-icon{
     font-size: 40px;
     color: white;
     border: 2px solid white;
@@ -221,40 +221,40 @@ body {
     background: rgba(0,0,0,0.4);
 }
 
-.movieitem:hover .overlay{
+.movie-item:hover .overlay{
     opacity: 1;
 }
 
-.todayitem .info{
+.today-item .info{
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.ratinginfo{
+.rating-info{
     display: flex;
     align-items: center;
     margin-top: 2px;
 }
 
-.ratinginfo .star{
+.rating-info .star{
     font-size: 10px;
     margin-right: 3px;
 }
 
-.ratinginfor .score{
+.rating-infor .score{
     color: #ffc107;
     font-size: 12px;
     font-weight: bold;
     margin-right: 0px;
 }
 
-.ratinginfo .year{
+.rating-info .year{
     color: #aaa;
     font-size: 12px;
 }
 
-.scorebox{
+.score-box{
     display: flex;
     align-items: center;
     background-color: rgba(0,0,0,0.4);
@@ -263,36 +263,36 @@ body {
     margin-right: 8px;
 }
 
-.sitefooter{
+.site-footer{
     background-color: #141414;
     color: #aaa;
     padding: 30px 0;
     margin-top: 30px;
 }
 
-.footerwrapper{
+.footer-wrapper{
     max-width: 1300px;
     margin: 0 auto;
     padding: 0 10px;
 }
 
-.footerlogo img{
+.footer-logo img{
     width: 150px;
     height: auto;
     margin-bottom: 15px;
 }
 
-.footertext p{
+.footer-text p{
     font-size: 13px;
     line-height: 1.6;
     margin-bottom: 10px;
 }
 
-.socialicon{
+.social-icon{
     margin-top: 20px;
 }
 
-.socialicon a{
+.social-icon a{
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -306,20 +306,20 @@ body {
     overflow: hidden;
 }
 
-.socialicon a img{
+.social-icon a img{
     width: 16px;
     height: 16px;
     object-fit: contain;
 }
-.socialicon a:hover{
+.social-icon a:hover{
     background-color: #66ff66;
 }
 
-.footernav{
+.footer-nav{
     margin-top: 20px;
 }
 
-.footernav a{
+.footer-nav a{
     color: #ccc;
     text-decoration: none;
     margin-right: 20px;
@@ -327,81 +327,81 @@ body {
     font-weight: bold;
 }
 
-.footernav a:hover{
+.footer-nav a:hover{
     color: #66ff66;
 }
 
-.footerdivider{
+.footer-divider{
     border: none;
     border-top: 1px solid #333;
     margin: 25px 0;
 }
 
-.footerlegal p{
+.footer-legal p{
     font-size: 12px;
     color: #777;
     line-height: 1.5;
     margin-bottom: 10px;
 }
 
-.movieitem .moviesubtitle{
+.movie-item .movie-subtitle{
     font-size: 11px;
     color: #888;
     margin-top: 0;
     line-height: 1.2;
 }
 
-.movieitem .movietitle{
+.movie-item .movie-title{
     font-size: 13px;
     color: #fff;
     font-weight: bold;
     margin-bottom: 2px;
 }
 
-.todayitem .info .subtitle{
+.today-item .info .subtitle{
     font-size: 11px;
     color: #888;
     margin: 0;
 }
 
-.moviedetailcontainer{
+.movie-detail-container{
     padding-top: 30px;
 }
 
-.detaillayout{
+.detail-layout{
     display: flex;
     gap: 30px;
     color: #ccc;
 }
 
-.detailposter{
+.detail-poster{
     flex-shrink: 0;
     width: 250px;
 }
 
-.detailposter img{
+.detail-poster img{
     width: 100%;
     height: auto;
     border-radius: 8px;
 }
 
-.detailinfo{
+.detail-info{
     flex-grow: 1;
 }
 
-.detailinfo h1{
+.detail-info h1{
     color: #fff;
     font-size: 28px;
     margin-top: 0;
     margin-bottom: 20px;
 }
 
-.detailinfo p{
+.detail-info p{
     font-size: 14px;
     line-height: 1.6;
 }
 
-.detailinfo p strong{
+.detail-info p strong{
     color: #fff;
     margin-right: 5px;
 }
@@ -412,7 +412,7 @@ body {
     padding-top: 20px;
 }
 
-.detailbuttons{
+.detail-buttons{
     margin-top: 30px;
 }
 
@@ -425,11 +425,11 @@ body {
     font-weight: bold;
 }
 
-.btnprimary{
+.btn-primary{
     background-color: #E50914;
 }
 
-.btnsecondary{
+.btn-secondary{
     background-color: #555;
 }
 
