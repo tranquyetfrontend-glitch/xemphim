@@ -1,0 +1,126 @@
+body{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    color: #fff;
+    font-family: sans-serif;
+}
+
+
+.main-header{
+    background-color: #000; 
+    padding: 10px 30px;
+    border-bottom: 1px solid #333;
+    width: 100%;
+}
+
+.header-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.logo img{
+    height: 35px;
+    vertical-align: middle;
+}
+
+.main-nav a{
+    color: #fff;
+    text-decoration: none;
+    padding: 0 15px;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.main-nav a:hover{
+    opacity: 1;
+    color: #e50914;
+}
+
+.user-actions{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-actions .btn{
+    padding: 8px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 0px;
+    vertical-align: middle;
+    line-height: 1.2;
+    
+}
+
+.user-actions .btn-primary{
+    padding: 8px 15px; 
+}
+
+.user-actions .btn-secondary{
+    background-color: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+}
+
+.user-actions .btn-login{
+    background-color: #e50914; 
+    color: #fff;
+    border: 1px solid transparent;
+}
+
+
+.main-footer{
+    background-color: #000;
+    padding: 30px 20px;
+    text-align: center;
+    border-top: 1px solid #333;
+    margin-top: auto;
+}
+
+.footer-nav a{
+    color: #fff;
+    text-decoration: none;
+    padding: 0 10px;
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+.footer-social-apps{
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-social-apps img{
+    height: 35px; 
+    margin: 0 5px;
+}
+
+.bct-logo{
+    height: 50px !important; 
+    width: auto;
+}
+
+.footer-contact-info p{
+    font-size: 12px;
+    margin: 4px 0;
+    color: #aaa;
+}
+
+.copyright{
+    margin-top: 20px !important;
+    font-size: 11px !important;
+}

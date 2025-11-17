@@ -119,41 +119,36 @@ function handleSeatClick(event){
 /*
 thanh toán, tổng tiền
 */
-function updateSelectionSummary(){
+function updateSelectionSummary(returnTotal = false){
     const seatDisplay = document.getElementById('selected-seats-display');
     const priceDisplay = document.getElementById('total-price-display');
     if(!seatDisplay || !priceDisplay) {
         console.error("Lỗi: Không tìm thấy 'selected-seats-display' hoặc 'total-price-display'");
-        return;
+        return 0;
     }
     const sortedSeats = [...selectedSeats].sort();
     if(selectedSeats.length === 0){
-        seatDisplay.textContent = '...';
-        priceDisplay.textContent = '0đ'
-        return;
+        if(!returnTotal){
+            seatDisplay.textContent = '...';
+            priceDisplay.textContent = '0đ'
+        }
+        return 0;
     }
-    seatDisplay.textContent = sortedSeats.join(', ');
+    if(!returnTotal){
+        seatDisplay.textContent = sortedSeats.join(', ');
+    }
     let total = 0;
     const processed = new Set();
     selectedSeats.forEach(seatId =>{
-        if (processed.has(seatId)){
-            return;
-        } 
+        if (processed.has(seatId)) return;
         const row = seatId.charAt(0);
         const seatNum = parseInt(seatId.substring(1));
         let isCouple = COUPLE_SEATS_LEFT.includes(seatId) || COUPLE_SEATS_RIGHT.includes(seatId);
         if (isCouple) {
             total += COUPLE_PRICE;
             processed.add(seatId);
-            let partnerId = null;
-            if (COUPLE_SEATS_LEFT.includes(seatId)) {
-                partnerId = row + (seatNum + 1);
-            } 
-            else {
-                partnerId = row + (seatNum - 1);
-            }
+            let partnerId = COUPLE_SEATS_LEFT.includes(seatId) ? row + (seatNum + 1) : row + (seatNum - 1);
             processed.add(partnerId);
-
         } 
         else if (VIP_ROWS.includes(row)) {
             total += VIP_PRICE;
@@ -164,13 +159,18 @@ function updateSelectionSummary(){
             processed.add(seatId);
         }
     });
-    priceDisplay.textContent = `${total.toLocaleString('vi-VN')}đ`;
+    if (!returnTotal) {
+        priceDisplay.textContent = `${total.toLocaleString('vi-VN')}đ`;
+    }
+    return total;
 }
 
 /*
 xử lý nút bấm thanh toán
 */
 function handleCheckout(){
+    const seatsToCheckout = [...selectedSeats];
+    const total = updateSelectionSummary(true);
     if(selectedSeats.length === 0){
         alert('Vui lòng chọn ít nhất một ghế');
         return;
@@ -178,7 +178,14 @@ function handleCheckout(){
     if(countdownInterval){
         clearInterval(countdownInterval);
     }
-    alert(`Thanh toán cho các ghế: ${selectedSeats.join(', ')}`) 
+    const paymentData = {
+        movieTitle: currentMovie.tieuDe,
+        showtime: currentSelectedTime,
+        seats: seatsToCheckout,
+        total: total,
+    };
+    localStorage.setItem('paymentData', JSON.stringify(paymentData));
+    window.location.href = 'thanh-toan.html';
 }
 
 /*
@@ -186,14 +193,16 @@ Hàm chính: Thay thế khối lịch chiếu bằng giao diện chọn ghế
 @param {string} time - giờ chiếu đã chọn
 @param {string} movieTitle - tên phim
 */
-function renderSeatSelection(time, movieTitle){
+function renderSeatSelection(time, movie){
     const showtimeSection = document.querySelector('.showtime-section');
     if(!showtimeSection) return;
+    currentMovie =movie;
+    currentSelectedTime = time;
     selectedSeats = [];
     let seatHTML=`
     <div class="seat-selection-content">
         <div class="showtime-header">
-            <span class="movie-title-display">${movieTitle}</span>
+            <span class="movie-title-display">${movie.tieuDe}</span>
             <span class="showtime-display">Giờ chiếu: ${time}</span>
             <span class="timer-display">Thời gian chọn ghế: <span id="countdown">10:00</span></span>
         </div>
@@ -303,33 +312,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     <a href="#" class="time-slot-btn">21:05</a>
                 </div>
             </div>
-            <div class="intermediate-footer">
-                <a href="#">Chính sách</a>
-                <a href="#">Lịch chiếu</a>
-                <a href="#">Tin tức</a>
-                <a href="#">Giá vé</a>
-                <a href="#">Hỏi đáp</a>
-                <a href="#">Đặt vé nhóm, tập thể</a>
-                <a href="#">Liên hệ</a>
-            </div>
-
-            <div class="copyright-section">
-            <div class="social-icons">
-                <a href="#"><img src="https://chieuphimquocgia.com.vn/_next/image?url=%2Fimages%2Ffacebook.png&w=64&q=75" style="width: auto !important; height: 45px !important;"></a>
-                <a href="#"><img src="https://chieuphimquocgia.com.vn/_next/image?url=%2Fimages%2Fzalo.webp&w=64&q=75" style="width: auto !important; height: 45px !important;"></a>
-                <a href="#"><img src="https://chieuphimquocgia.com.vn/_next/image?url=%2Fimages%2Fyoutube2.png&w=64&q=75"style="width: auto !important; height: 45px !important;" ></a>
-                <a href="#"><img src="https://chieuphimquocgia.com.vn/_next/image?url=%2Fimages%2Fgoogleplay.png&w=384&q=75" style="width: auto !important; height: 45px !important;"></a>
-                <a href="#"><img src="https://chieuphimquocgia.com.vn/_next/image?url=%2Fimages%2Fappstore.png&w=384&q=75" style="width: auto !important; height: 45px !important;"></a>
-                <a href="#"><img src="https://chieuphimquocgia.com.vn/_next/image?url=%2Fimages%2Fcertification.png&w=384&q=75" style="height: 45px !important; width: auto !important;"></a>
-            </div>
-            <div class="contact-info">
-                <p>Cơ quan chủ quản: BỘ VĂN HÓA, THỂ THAO VÀ DU LỊCH</p>
-                <p>Bản quyền thuộc Trung tâm Chiếu phim Quốc gia.</p>
-                <p>Giấy phép số: 224/GP- TTĐT ngày 31/8/2010 - Chịu trách nhiệm: Vũ Đức Tùng – Giám đốc.</p>
-                <p>Địa chỉ: Số 87 Láng Hạ, Phường Ô Chợ Dừa, TP.Hà Nội - Điện thoại: 024.35141791</p>
-            </div>
-                <p class="copyright">Copyright 2023. NCC All Rights Reserved. Dev by Anvui.vn</p>
-            </div>
             `;
 
             container.innerHTML = detailHTML;
@@ -364,7 +346,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     button.addEventListener('click', function(e){
                         e.preventDefault();
                         const selectedTime = this.getAttribute('data-time');
-                        renderSeatSelection(selectedTime, phim.tieuDe);
+                        renderSeatSelection(selectedTime, phim);
                     });
                 });
             }

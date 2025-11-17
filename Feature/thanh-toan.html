@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán vé</title>
+    <link rel="stylesheet" href="payment/payment.css">
+    <link rel="stylesheet" href="../Share/share.css">
+    </head>
+<body>
+    <div class="main-payment-container">
+        <div class="payment-content-wrapper">
+            <div class="left-column">
+                <div class="info-block" id="movie-info-block">
+                    <h2>Thông tin phim</h2>
+                    <p>Phim: <span id="payment-movie-title">Đang tải...</span></p>
+                    <p>Ngày giờ chiếu: <span id="payment-showtime">Đang tải...</span></p>
+                    <p>Định dạng: <span id="payment-format">Đang tải...</span></p>
+                    <p>Phòng chiếu: <span id="payment-room">Đang tải...</span></p>
+                    <p>Ghế: <span id="payment-seats">Đang tải...</span></p>
+                </div>
+                <div class="info-block" id="payment-summary-block">
+                    <h2>Thông tin thanh toán</h2>
+                    <table class="summary-table">
+                        <thead>
+                            <tr>
+                                <th>Danh mục</th>
+                                <th>Số lượng</th>
+                                <th>Tổng tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody id="payment-summary-body">
+                            <tr><td>Ghế</td><td>...</td><td>...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="right-column">
+                <div class="info-block" id="payment-methods">
+                    <h2>Phương thức thanh toán</h2>
+                    <div class="payment-options">
+                        <div class="payment-option active" data-method="vietqr">
+                            <img src="https://chieuphimquocgia.com.vn/_next/image?url=%2Fimages%2Fvietqr.png&w=64&q=75" alt="VietQR">
+                            <span>VietQR</span>
+                        </div>
+                        <div class="payment-option" data-method="vnpay">
+                            <img src="https://chieuphimquocgia.com.vn/images/vnpay.svg" alt="VNPay">
+                            <span>VNPay</span>
+                        </div>
+                        <div class="payment-option" data-method="viettelmoney">
+                            <img src="https://chieuphimquocgia.com.vn/_next/image?url=%2Fimages%2Fviettel1.png&w=64&q=75" alt="Viettel Money">
+                            <span>Viettel Money</span>
+                        </div>
+                        <div class="payment-option" data-method="momo">
+                            <img src="https://chieuphimquocgia.com.vn/_next/image?url=%2Fimages%2Fmomo3.png&w=64&q=75" alt="MoMo">
+                            <span>MoMo</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-block" id="cost-block">
+                    <h2>Chi phí</h2>
+                    <p>Thanh toán: <span id="cost-subtotal">0đ</span></p>
+                    <p>Phí: <span id="cost-fee">0đ</span></p>
+                    <p>Tổng cộng: <span id="cost-total">0đ</span></p>
+                    
+                    <button id="confirm-payment-btn" class="btn btn-primary">Thanh toán</button>
+                    <button id="back-to-seats-btn" class="btn btn-secondary">Quay lại</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../Share/data.js"></script>
+    <script src="../Share/header-footer.js"></script>
+    <script src="payment/payment.js"></script> 
+</body>
+</html>
