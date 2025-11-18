@@ -185,7 +185,7 @@ function handleCheckout(){
         total: total,
     };
     localStorage.setItem('paymentData', JSON.stringify(paymentData));
-    window.location.href = 'thanh-toan.html';
+    window.location.href = '../payment/thanh-toan.html';
 }
 
 /*

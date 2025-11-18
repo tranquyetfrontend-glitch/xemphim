@@ -241,8 +241,7 @@ const danhSachXepHang = [
         phuDe:"Whispers of Fate",
         diem:7.3,
         nam:2025,
-        hinhAnh:"https://www.motchill20.net/wp-content/uploads/phim-thuy-long-ngam.jpg",
-
+        hinhAnh:"https://bloganchoi.com/wp-content/uploads/2023/11/poster-khai-niem-1-696x1237.jpg",
         thoiLuong:"100 phút",
         daoDien:"Trần Trụ Phí, Tiền Kính Ngọ",
         dienVien:"La Vân Hi, Tiêu Thuận Nghiêu",

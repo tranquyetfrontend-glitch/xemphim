@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function(){
     }
     danhSachPhimHan.forEach(phim => {
         const movieItemHTML = `
-        <a href="chi-tiet-phim.html?id=${phim.id}">
+        <a href="../detail/chi-tiet-phim.html?id=${phim.id}">
             <div class="movie-item">
                 <img src="${phim.hinhAnh}" alt="${phim.tieuDe}">
                 <div class="overlay">
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function(){
     if(thungChuaXepHang && danhSachXepHang){
         danhSachXepHang.forEach(item => {
             const todayItemHTML=`
-            <a href="chi-tiet-phim.html?id=${item.id}">
+            <a href="../detail/chi-tiet-phim.html?id=${item.id}">
             <div class="today-item">
                 <img src="${item.hinhAnh}" alt="${item.tieuDe}">
                 <div class="info">

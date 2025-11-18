@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const paymentDataJSON = localStorage.getItem('paymentData');
     if (!paymentDataJSON) {
         alert('Không tìm thấy thông tin vé. Quay về trang chủ.');
-        window.location.href = 'index.html';
+        window.location.href = '../home/index.html';
         return;
     }
     const data = JSON.parse(paymentDataJSON);

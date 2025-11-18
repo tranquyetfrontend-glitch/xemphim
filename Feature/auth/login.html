@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="modal-overlay" id="login-modal">
+        <div class="auth-form-container">
+            <button class="close-btn">&times;</button>
+            <h2 class="auth-title">Đăng nhập</h2>
+            <form action="login-form">
+                <div class="form-group">
+                    <label for="login-username">Email</label>
+                    <input type="text" id="login-username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Mật khẩu</label>
+                    <input type="password" id="login-password" name="password" required>
+                </div>
+                <div class="form-group forgot-link-group">
+                    <a href="#" id="show-forgot-link">Quên mật khẩu?</a>
+                </div>
+                <button type="submit" class="auth-btn btn-primary">Đăng nhập</button>
+                <p class="auth-link">Chưa có tài khoản? <a href="#" id="show-register-link">Đăng ký ngay</a></p>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
