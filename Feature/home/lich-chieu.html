@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch Chiếu Phim</title>
+    <link rel="stylesheet" href="../common/header-footer.css">
+    <link rel="stylesheet" href="../auth/auth.css">
+    <link rel="stylesheet" href="home.css">
+</head>
+<body>
+    <div class="main-wrapper">
+        <div class="container full-width">
+            <div class="left-container">
+                <section class="schedule-section">
+                    <h2>LỊCH CHIẾU</h2>
+                    <div class="date-selector-container" id="date-selector">
+                        <div class="date-tab active" data-date="2025-11-19">Hôm nay, 19/11</div>
+                        <div class="date-tab" data-date="2025-11-20">Thứ 5, 20/11</div>
+                        <div class="date-tab" data-date="2025-11-21">Thứ 6, 21/11</div>
+                        <div class="date-tab" data-date="2025-11-22">Thứ 7, 22/11</div>
+                    </div>
+                    <div id="showtime-list-container">
+                        <div class="movie-showtime-block">...</div>
+                        <div class="movie-showtime-block">...</div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <div id="auth-modals-container"></div>
+    <script src="../../Share/data.js"></script>
+    <script src="home.js"></script>
+    <script src="../common/header-footer.js"></script>  
+    <script src="../auth/auth.js"></script>
+</body>
+</html>

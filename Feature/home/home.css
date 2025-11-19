@@ -436,3 +436,208 @@ body {
 .btn:hover{
     opacity: 0.8;
 }
+
+.schedule-section h2{
+    margin-bottom: 25px;
+    color: #ff0000;
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+}
+
+.date-selector-container{
+    display: flex;
+    overflow-x: auto;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+}
+
+.date-tab{
+    background: #111;
+    color: #ccc;
+    border: 1px solid #333;
+    padding: 10px 15px;
+    margin-right: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    min-width: 120px;
+    text-align: center;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.date-tab:hover{
+    background-color: #222;
+}
+
+.date-tab.active{
+    background-color: #ff0000;
+    color: white;
+    border-color: #ff0000;
+    font-weight: bold;
+}
+
+.movie-showtime-block{
+    background-color: #1a1a1a;
+    padding: 20px;
+    margin-bottom: 25px;
+    border-radius: 8px;
+    border-left: 5px solid #ff0000;
+}
+
+.movie-info h3{
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #ffffff;
+    font-size: 22px;
+}
+
+.movie-info .rating{
+    display: inline-block;
+    padding: 2px 6px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 3px;
+    margin-right: 10px;
+}
+
+.movie-info .t18{
+    background-color: #ff0000;
+    color: white;
+}
+
+.movie-info .type{
+    font-size: 14px;
+    color: #aaa;
+}
+
+.showtime-grid{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed #333;
+}
+
+.time-slot{
+    display: block;
+    padding: 8px 15px;
+    border: 1px solid #ff0000;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+
+.time-slot.available{
+    background-color: #ff0000;
+    color: white;
+}
+
+.time-slot.available:hover{
+    background-color: #cc0000;
+    transform: scale(1.05);
+}
+
+.time-slot.booked{
+    background-color: #333;
+    color: #777;
+    border-color: #555;
+    cursor: not-allowed;
+}
+
+.movie-showtime-block{
+    background-color: #1a1a1a;
+    padding: 20px;
+    margin-bottom: 25px;
+    border-radius: 8px;
+}
+
+.movie-info{
+    display: flex;
+    gap: 20px;
+}
+
+.left-poster{
+    flex-shrink: 0;
+    width: 140px;
+}
+
+.left-poster img{
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.right-details{
+    flex-grow: 1;
+}
+
+.right-details h3{
+    font-size: 20px;
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.movie-meta{
+    font-size: 14px;
+    color: #ccc;
+    line-height: 1.4;
+    margin: 0 0 4px 0;
+}
+
+.showtime-title{
+    font-weight: bold;
+    color: #fff;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed #333;
+}
+
+.showtime-grid{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.time-slot{
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.rating{
+    display: inline-block;
+    padding: 2px 6px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 3px;
+    margin-right: 5px;
+    color: white;
+}
+
+.t18{
+    background-color: #ff0000;
+}
+
+.t16{
+    background-color: #f1c40f;
+}
+
+#showtime-list-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px 40px;
+    max-width: 1200px;
+    margin: 30px auto;
+}
+
+@media (max-width: 768px){
+    #showtime-list-container {
+        grid-template-columns: 1fr;
+        padding: 0 15px;
+    }
+}

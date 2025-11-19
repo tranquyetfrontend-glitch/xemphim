@@ -9,25 +9,31 @@
 </head>
 <body>
     <header class="main-header">
-            <div class="header-container">
-                <a href="home/index.html" class="logo">
-                    <img src="https://chieuphimquocgia.com.vn/images/logo-text-new.svg" alt="National Cinema Center Logo">
-                </a>
-                <nav class="main-nav">
-                    <a href="home/index.html">Trang chủ</a>
-                    <a href="#">Lịch chiếu</a>
-                    <a href="#">Tin tức</a>
-                    <a href="#">Khuyến mãi</a>
-                    <a href="#">Giá vé</a>
-                    <a href="#">Liên hoan phim, Tuần phim</a>
-                    <a href="#">Giới thiệu</a>
-                </nav>
+        <div class="header-container">
+            <a href="../home/index.html" class="logo">
+                <img src="https://chieuphimquocgia.com.vn/images/logo-text-new.svg" alt="National Cinema Center Logo">
+            </a>
+            <nav class="main-nav">
+                <a href="../home/index.html">Trang chủ</a>
+                <a href="../home/lich-chieu.html">Lịch chiếu</a>
+                <a href="#">Tin tức</a>
+                <a href="#">Khuyến mãi</a>
+                <a href="#">Giá vé</a>
+                <a href="#">Liên hoan phim, Tuần phim</a>
+                <a href="#">Giới thiệu</a>
+            </nav>
+            <div class="user-control">
                 <div class="user-actions">
                     <button class="btn-secondary">Đăng ký</button>
                     <button class="btn-login">Đăng nhập</button>
                 </div>
+                <div class="user-info" style="display: none;">
+                    <span id="user-greeting">Xin chào</span>
+                    <button id="btn-logout" style="margin-left: 10px;">Đăng xuất</button>
+                </div>
             </div>
-        </header>
+        </div>
+    </header>
         <script src="header-footer.js"></script>
         <script src="../auth/auth.js"></script>
 </body>
