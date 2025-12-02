@@ -10,7 +10,7 @@ export const register = async (req, res) =>{
             return res.status(400).json({ message: error.details[0].message });
         }
         const newUser = await AUTH_SERVICE.registerUser(value);
-        if(!newUser || !newUser.user_id || !newUser.email){e
+        if(!newUser || !newUser.user_id || !newUser.email){
             throw new Error('Đăng ký thất bại do lỗi xử lý nghiệp vụ.');
         }
 
@@ -33,19 +33,20 @@ export const register = async (req, res) =>{
     }
 };
 
-export const login = async (req, res) =>{
+export const login = async (req, res) => {
     try{
-        const {identifier, password} = req.body;
-        
-        if(!identifier || !password) {
-             return res.status(400).json({message: "Vui lòng nhập Email/Username và Mật khẩu."});
+        const {email, password} = req.body; 
+        if (!email || !password) {
+            return res.status(400).json({ message: "Vui lòng cung cấp email và mật khẩu." });
         }
-        const result = await AUTH_SERVICE.loginUser(identifier, password);
+        const result = await AUTH_SERVICE.loginUser(email, password); 
         return res.status(200).json(result);
-    } 
-    catch(error){
-        console.error("Lỗi Controller Login:", error.message);
-        return res.status(401).json({message: 'Đăng nhập thất bại: '+error.message});
+    }
+    catch (error){
+        console.error("Lỗi đăng nhập:", error.message);
+        return res.status(401).json({ 
+            message: `Đăng nhập thất bại: ${error.message}` 
+        });
     }
 };
 
@@ -63,6 +64,41 @@ export const refreshToken = async (req,res) =>{
     } 
     catch (error){
         console.error("Lỗi Controller Refresh Token:", error.message);
-        return res.status(403).json({ message: 'Refresh token không hợp lệ: ' + error.message });
+        return res.status(403).json({message: 'Refresh token không hợp lệ: ' + error.message});
+    }
+};
+
+export const forgotPassword = async (req, res) =>{
+    try{
+        const {email} = req.body; 
+        if(!email){
+            return res.status(400).json({message: "Vui lòng cung cấp địa chỉ email."});
+        }
+        const result = await AUTH_SERVICE.forgotPassword(email);
+        return res.status(200).json({ 
+            message: result.message 
+        });
+    }
+    catch (error){
+        console.error("Lỗi Controller Forgot Password:", error.message);
+        return res.status(500).json({message: "Lỗi máy chủ nội bộ khi xử lý quên mật khẩu."});
+    }
+};
+
+export const resetPassword = async (req, res) =>{
+    try{
+        const {token} = req.query; 
+        const {newPassword} = req.body;
+        if(!token|| !newPassword){
+            return res.status(400).json({message: "Thiếu token hoặc mật khẩu mới."});
+        }
+        await AUTH_SERVICE.resetPassword(token, newPassword);
+        return res.status(200).json({ 
+            message: 'Mật khẩu đã được đặt lại thành công. Vui lòng đăng nhập lại.' 
+        });
+    }
+    catch (error) {
+        console.error("Lỗi Controller Reset Password:", error.message);
+        return res.status(400).json({message: error.message});
     }
 };

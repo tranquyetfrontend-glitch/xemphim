@@ -1,25 +1,20 @@
 let countdownInterval;
-
 let selectedSeats = [];
 const SEAT_PRICE = 80000;
 const VIP_PRICE = 100000;
 const COUPLE_PRICE = 180000;
-const RESERVED_SEATS =[]; 
+const RESERVED_SEATS = []; 
 const VIP_ROWS = ['D','E','F','G','H'];
 const SEAT_ROWS = ['A','B','C','D','E','F','G','H','I'];
 const COUPLE_SEATS_LEFT = ['I1', 'I3', 'I5', 'I7', 'I9'];
 const COUPLE_SEATS_RIGHT = ['I2', 'I4', 'I6', 'I8', 'I10'];
 const SEAT_PER_ROW = 11;
-
-/*
-@param {number} durationSeconds - Thời gian đếm ngược (tính bằng giây)
-*/
+let currentMovie = {};
+let currentSelectedTime = "";
 
 function startCountdown(durationSeconds){
     let timer = durationSeconds, minutes, seconds;
-    if(countdownInterval){
-        clearInterval(countdownInterval);
-    }
+    if(countdownInterval) clearInterval(countdownInterval);
     const displayElement = document.getElementById('countdown');
     if(!displayElement) return;
     countdownInterval = setInterval(()=>{
@@ -30,7 +25,7 @@ function startCountdown(durationSeconds){
         displayElement.textContent = minutes + ":" + seconds;
         if(--timer < 0){
             clearInterval(countdownInterval);
-            alert("đã hết thời gian chọn ghế. Vui lòng thử lại!"); 
+            alert("Đã hết thời gian chọn ghế. Vui lòng thử lại!"); 
             window.location.reload()
         }
     },1000);
@@ -179,7 +174,7 @@ function handleCheckout(){
         clearInterval(countdownInterval);
     }
     const paymentData = {
-        movieTitle: currentMovie.tieuDe,
+        movieTitle: currentMovie.title,
         showtime: currentSelectedTime,
         seats: seatsToCheckout,
         total: total,
@@ -235,7 +230,6 @@ function renderSeatSelection(time, movie){
     `;
     
     showtimeSection.innerHTML = seatHTML; 
-
     initializeSeatMap();
     startCountdown(60*10);
     const cancelBtn = document.getElementById('cancel-selection-btn');
@@ -251,125 +245,128 @@ function renderSeatSelection(time, movie){
         }
 }
 
-
-
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded",async function(){
     const urlParams = new URLSearchParams(window.location.search);
     const movieId = urlParams.get('id');
     const container = document.getElementById("movie-detail-container");
-    if(movieId){
-        const allMovies = [...danhSachPhimHan, ...danhSachXepHang];
-        const phim = allMovies.find(p=> p.id === movieId);
-        if(phim){
-            const bgContainer = document.querySelector('.detail-background');
-            if(bgContainer){
-                bgContainer.style.setProperty('--detail-bg-image', `url(${phim.hinhAnh})`);
-            }
-            document.title = phim.tieuDe;
-            const detailHTML = `
-            <div class="detail-layout">
-                <div class="detail-poster">
-                    <img src="${phim.hinhAnh}" alt="${phim.tieuDe}">
-                </div>
-                <div class="detail-info">
-                    <h1>${phim.tieuDe}</h1>
-                    <p><strong>Thời Lượng:</strong>${phim.thoiLuong}</p>
-                    <p><strong>Đạo Diễn:</strong>${phim.daoDien}</p>
-                    <p><strong>Diễn Viên:</strong>${phim.dienVien}</p>
-                    <p><strong>Khởi Chiếu:</strong>${phim.khoiChieu}</p>
-                    <div class="synopsis">
-                        <p>${phim.moTa}</p>
-                    </div>
-                    <div class="detail-buttons">
-                        <a href="#" class="btn btn-primary">Chi tiết nội dung</a>
-                        <a href="#" class="btn btn-secondary">Xem trailer</a>
-                    </div>
-                   </div>
-            </div>
-
-            <div class="showtime-section">
-                <div class="showtime-dates">
-                <div class="date-item active" data-date="13">
-                    <span class="day-of-week">Th. 11</span>
-                    <span class="day-num">13</span>
-                    <span class="day-name">Thứ năm</span>
-                </div>
-                <div class="date-item" data-date="14"> 
-                    <span class="day-of-week">Th. 11</span>
-                    <span class="day-num">14</span>
-                    <span class="day-name">Thứ sáu</span>
-                </div>
-                <div class="date-item" data-date="15"> 
-                    <span class="day-of-week">Th. 11</span>
-                    <span class="day-num">15</span>
-                    <span class="day-name">Thứ bảy</span>
-                </div>
-                </div>
-
-                <div id="time-slots-container" class="time-slots-container">
-                    <a href="#" class="time-slot-btn">18:20</a>
-                    <a href="#" class="time-slot-btn">20:00</a>
-                    <a href="#" class="time-slot-btn">21:05</a>
-                </div>
-            </div>
-            `;
-
-            container.innerHTML = detailHTML;
-            const dateItems = document.querySelectorAll('.date-item');
-            const timeSlotsContainer = document.getElementById('time-slots-container');
-            const showtimesData = {
-                '13': ['18:20', '20:00', '21:05'],
-                '14': ['19:00', '21:00', '22:55'],
-                '15': ['15:00', '18:30', '20:30']
-            };
-            
-            function updateShowtimes(dateId){
-                const time = showtimesData[dateId] || [];
-                let timesHTML = '';
-                if(time.length>0){
-                    time.forEach(time=>{
-                        timesHTML += `<a href="#" class="time-slot-btn" data-time="${time}">${time}</a>`;
-                    });
-                }
-                else{
-                    timesHTML =`<p style="color: #ccc; margin-left: 15px;">Chưa có suất chiếu cho ngày này.</p>`;
-                }
-                timeSlotsContainer.innerHTML = timesHTML;
-                attachTimeSlotListeners();
-            }
-
-            /*
-            gắn sự kiện click cho các nút giờ chiếu
-            */
-            function attachTimeSlotListeners(){
-                document.querySelectorAll('.time-slot-btn').forEach(button=>{
-                    button.addEventListener('click', function(e){
-                        e.preventDefault();
-                        const selectedTime = this.getAttribute('data-time');
-                        renderSeatSelection(selectedTime, phim);
-                    });
-                });
-            }
-
-            dateItems.forEach(item=>{
-                item.addEventListener('click',function(){
-                    dateItems.forEach(d=> d.classList.remove('active'));
-                    this.classList.add('active');
-                    const selectedDateId = this.getAttribute('data-date');
-                    updateShowtimes(selectedDateId);
-                });
-            });
-            
-            const defaultActiveDate = document.querySelector('.date-item.active');
-            if(defaultActiveDate){
-                updateShowtimes(defaultActiveDate.getAttribute('data-date'));
-            }
-        }
-        else{
-            container.innerHTML = "<h1>Không tìm thấy phim này.</h1>";
-        }
+    if(!movieId){
+        container.innerHTML = "<h1>Lỗi: Không tìm thấy ID phim trên URL.</h1>";
+        return;
     }
-    else{
-        container.innerHTML = "<h1>Lỗi: Không có ID phim.</h1>";
+    try{
+        const response = await fetch(`http://127.0.0.1:3001/api/movies/${movieId}`);
+        if(!response.ok){
+            throw new Error('Không thể tải thông tin phim.');
+        }
+        const phim = await response.json();
+        const bgContainer = document.querySelector('.detail-background');
+        if(bgContainer){
+            bgContainer.style.setProperty('--detail-bg-image', `url(${phim.poster_url})`);
+        }
+        document.title = phim.title;
+        const detailHTML = `
+        <div class="detail-layout">
+            <div class="detail-poster">
+                <img src="${phim.poster_url}" alt="${phim.title}" onerror="this.src='https://via.placeholder.com/300x450'">
+            </div>
+            <div class="detail-info">
+                <h1>${phim.title}</h1>
+                <p><strong>Thời Lượng:</strong> ${phim.duration_minutes} phút</p>
+                <p><strong>Khởi Chiếu:</strong> ${new Date(phim.release_date).toLocaleDateString('vi-VN')}</p>
+                <div class="synopsis">
+                    <p>${phim.description || 'Chưa có mô tả.'}</p>
+                </div>
+                <div class="detail-buttons">
+                    <a href="#" class="btn btn-primary">Chi tiết nội dung</a>
+                    ${phim.trailer_url ? `<a href="${phim.trailer_url}" target="_blank" class="btn btn-secondary">Xem trailer</a>` : ''}
+                </div>
+            </div>
+        </div>
+
+        <div class="showtime-section">
+            <h3 style="color:white; margin-bottom:15px; border-left: 4px solid #e71a0f; padding-left:10px;">LỊCH CHIẾU</h3>
+            <div class="showtime-dates" id="date-list">
+                </div>
+            <div id="time-slots-container" class="time-slots-container">
+                <p style="color:#ccc">Vui lòng chọn ngày để xem suất chiếu.</p>
+            </div>
+        </div>
+        `;
+        container.innerHTML = detailHTML;
+        const dateListContainer = document.getElementById('date-list');
+        const timeSlotsContainer = document.getElementById('time-slots-container');
+        const today = new Date();
+        let datesHTML = '';
+        for(let i = 0; i < 3; i++){
+            const date = new Date(today);
+            date.setDate(today.getDate() + i);
+            const dayNum = date.getDate();
+            const month = date.getMonth() + 1;
+            const dayName = i === 0 ? "Hôm nay" : `Thứ ${date.getDay() + 1 === 1 ? 'CN' : date.getDay() + 1}`;
+            const dateString = date.toISOString().split('T')[0];
+            datesHTML += `
+            <div class="date-item ${i === 0 ? 'active' : ''}" data-date="${dateString}">
+                <span class="day-of-week">Th.${month}</span>
+                <span class="day-num">${dayNum}</span>
+                <span class="day-name">${dayName}</span>
+            </div>`;
+        }
+        dateListContainer.innerHTML = datesHTML;
+        function updateShowtimes(selectedDate) {
+            timeSlotsContainer.innerHTML = '';
+            if (!phim.showtimes || phim.showtimes.length === 0) {
+                timeSlotsContainer.innerHTML = '<p style="color:#999">Chưa có lịch chiếu nào.</p>';
+                return;
+            }
+            let hasShowtime = false;
+            phim.showtimes.forEach(cinema => {
+                const validTimes = cinema.times.filter(t => {
+                    const tDate = new Date(t.time).toISOString().split('T')[0];
+                    return tDate === selectedDate;
+                });
+                if (validTimes.length > 0) {
+                    hasShowtime = true;
+                    const cinemaDiv = document.createElement('div');
+                    cinemaDiv.className = 'cinema-group';
+                    cinemaDiv.innerHTML = `<h4 style="color:#e71a0f; margin:10px 0;">${cinema.cinemaName}</h4>`;
+                    
+                    const timesDiv = document.createElement('div');
+                    timesDiv.className = 'cinema-times';
+                    validTimes.forEach(slot => {
+                        const timeObj = new Date(slot.time);
+                        const timeStr = timeObj.toLocaleTimeString('vi-VN', {hour: '2-digit', minute:'2-digit'});
+                        const btn = document.createElement('a');
+                        btn.href = "#";
+                        btn.className = 'time-slot-btn';
+                        btn.textContent = timeStr;
+                        btn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            renderSeatSelection(timeStr, phim);
+                        });
+                        timesDiv.appendChild(btn);
+                    });
+                    cinemaDiv.appendChild(timesDiv);
+                    timeSlotsContainer.appendChild(cinemaDiv);
+                }
+            });
+            if(!hasShowtime){
+                timeSlotsContainer.innerHTML = '<p style="color:#999">Không có suất chiếu vào ngày này.</p>';
+            }
+        }
+        const dateItems = document.querySelectorAll('.date-item');
+        dateItems.forEach(item =>{
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.date-item').forEach(d =>d.classList.remove('active'));
+                this.classList.add('active');
+                const date = this.getAttribute('data-date');
+                updateShowtimes(date);
+            });
+        });
+        const firstDate = dateItems[0].getAttribute('data-date');
+        updateShowtimes(firstDate);
+    }
+    catch(error){
+        console.error("Lỗi:",error);
+        container.innerHTML = "<h1>Không thể tải dữ liệu phim. Vui lòng kiểm tra kết nối Server.</h1>";
     }
 });

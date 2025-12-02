@@ -1,122 +1,119 @@
-document.addEventListener("DOMContentLoaded", function(){
-    const thungChuaPhim = document.getElementById("danhSachPhimHan");
-    if (thungChuaPhim && danhSachPhimHan && danhSachPhimHan.length > 0){
-        let allMoviesHTML = ''; 
-        danhSachPhimHan.forEach(phim => {
-            const movieItemHTML = `
-            <a href="../detail/chi-tiet-phim.html?id=${phim.id}">
-                <div class="movie-item">
-                    <img src="${phim.hinhAnh}" alt="${phim.tieuDe}">
-                    <div class="overlay">
-                        <span class="play-icon">▶</span> 
-                    </div>
-                    <p class="movie-title">${phim.tieuDe}</p>
-                    <p class="movie-subtitle">${phim.phuDe}</p>
-                </div>
-            </a>
-            `;
-            allMoviesHTML += movieItemHTML;
-        });
-        thungChuaPhim.innerHTML = allMoviesHTML;
-    } 
-
-    const thungChuaXepHang = document.getElementById("danhSachXepHang");
-    if(thungChuaXepHang && danhSachXepHang && danhSachXepHang.length > 0){
-        let allRankingsHTML = '';
-        danhSachXepHang.forEach(item => {
-            const todayItemHTML = `
-            <a href="../detail/chi-tiet-phim.html?id=${item.id}">
-            <div class="today-item">
-                <img src="${item.hinhAnh}" alt="${item.tieuDe}">
-                <div class="info">
-                    <h4>${item.tieuDe}</h4>
-                    <p class="sub-title">${item.phuDe}</p>
-                    <div class="rating-info">
-                        <div class="score-box">
-                            <span class="star">⭐</span>
-                            <span class="score">${item.diem}</span>
-                        </div>
-                        <span class="year">${item.nam}</span>
-                    </div>
-                </div>
-                <div class="rank">${item.rank}</div>
-            </div>
-            </a>
-            `;
-            allRankingsHTML += todayItemHTML;
-        });
-        thungChuaXepHang.innerHTML = allRankingsHTML;
-    }
-});
-
-function createShowtimeBlock(movie, date) {
-    const showtimes = [
-        "09:30", "11:30", "14:00", "18:30", "22:00"
-    ]; 
-    const movieSpecificShowtimes = {
-        "Anh Trai Say Xe": ["18:35", "21:00", "22:20", "23:00"],
-        "Sao Tháng 8": ["10:00"],
-        "Vợ Chồng A Phủ": ["14:00"],
-        "Chủ Thuật Hồi Chiến 0": ["11:50"],
-        "Trùm Thủy Long Ngâm": ["10:00", "14:00"],
-        "Chim Vành Khuyên": ["20:00"],
-        [movie.tieuDe]: ["09:30", "11:30", "14:00", "18:30", "22:00"]
-    };
-
-    const currentShowtimes = movieSpecificShowtimes[movie.title] || showtimes;
-    const timeSlotsHTML = currentShowtimes.map(time => {
-        const statusClass = "available";
-        return `<a href="#" class="time-slot ${statusClass}">${time}</a>`;
-    }).join('');
-    const ratingClass = 't13';
-    const ratingText = '13+';
+const API_MOVIE_URL = 'http://127.0.0.1:3001/api/movies';
+const API_SHOWTIME_URL = 'http://127.0.0.1:3001/api/showtimes/schedule';
+function createMovieItemHTML(movie){
     return `
-        <div class="movie-showtime-block">
-            <div class="movie-info">
-                <div class="left-poster">
-                    <img src="${movie.hinhAnh}" alt="${movie.tieuDe}">
-                </div>
-                <div class="right-details">
-                    <h3>${movie.tieuDe}</h3>
-                    <p class="movie-meta">
-                        <span class="rating ${ratingClass}">${ratingText}</span>
-                        <span>|</span>
-                        <span class="type">${movie.thoiLuong}</span>
-                    </p>
-                    <p class="movie-meta">Xuất xứ: Hàn Quốc </p>
-                    <p class="movie-meta">Khởi chiếu: ${movie.khoiChieu}</p>
-                    <p class="movie-meta">Dành cho người trên 13 tuổi. </p>
-                    <p class="movie-meta showtime-title">Lịch chiếu:</p>
-                    <div class="showtime-grid">${timeSlotsHTML}</div>
-                </div>
+    <a href="../detail/chi-tiet-phim.html?id=${movie.movie_id}">
+        <div class="movie-item">
+            <img src="${movie.poster_url}" alt="${movie.title}" onerror="this.src='https://via.placeholder.com/300x450'">
+            <div class="overlay">
+                <span class="play-icon">▶</span> 
             </div>
+            <p class="movie-title">${movie.title}</p>
+            <p class="movie-subtitle">${movie.subtitle || 'Phụ đề'}</p>
         </div>
+    </a>
     `;
 }
 
-function renderSchedule(date = "2025-11-19") {
-    const container = document.getElementById('showtime-list-container');
-    if (!container) return;
-    if (typeof danhSachPhimHan === 'undefined' || !danhSachPhimHan || danhSachPhimHan.length === 0) {
-        container.innerHTML = "<p style='color: #ccc; text-align: center;'>Không có dữ liệu phim.</p>";
-        return;
-    }
-    let htmlContent = '';
-    danhSachPhimHan.forEach(movie => { 
-        htmlContent += createShowtimeBlock(movie, date);
-    });
-
-    container.innerHTML = htmlContent;
+function createRankingItemHTML(movie, index){
+    const rank = index + 1;
+    const score = (Math.random() * (9.5 - 7.0) + 7.0).toFixed(1); 
+    const year = new Date(movie.release_date).getFullYear();
+    return `
+    <a href="../detail/chi-tiet-phim.html?id=${movie.movie_id}">
+        <div class="today-item">
+            <img src="${movie.poster_url}" alt="${movie.title}" onerror="this.src='https://via.placeholder.com/100x150'">
+            <div class="info">
+                <h4>${movie.title}</h4>
+                <p class="sub-title">${movie.subtitle || 'Phụ đề'}</p>
+                <div class="rating-info">
+                    <div class="score-box">
+                        <span class="star">⭐</span>
+                        <span class="score">${score}</span>
+                    </div>
+                    <span class="year">${year}</span>
+                </div>
+            </div>
+            <div class="rank">${rank}</div>
+        </div>
+    </a>
+    `;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    renderSchedule();
-    const dateTabs = document.querySelectorAll('.date-tab');
-    dateTabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            dateTabs.forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-            renderSchedule(this.getAttribute('data-date'));
-        });
-    });
+function createShowtimeBlock(movie, showtimeData){
+    const timesHtml = showtimeData.map(slot =>{
+        const timeObj = new Date(slot.time);
+        const timeStr = timeObj.toLocaleTimeString('vi-VN', {hour: '2-digit', minute:'2-digit'});
+        return `<a href="../detail/chi-tiet-phim.html?id=${movie.movie_id}&time=${timeStr}" class="time-slot-btn">${timeStr}</a>`;
+    }).join('');
+
+    return `
+    <div class="schedule-movie-item">
+        <img src="${movie.poster_url}" alt="${movie.title}" onerror="this.src='https://via.placeholder.com/100x150'">
+        <div class="movie-info">
+            <h4><a href="../detail/chi-tiet-phim.html?id=${movie.movie_id}">${movie.title}</a></h4>
+            <p class="subtitle">${movie.subtitle || 'Phụ đề'}</p>
+            <div class="showtime-times">
+                ${timesHtml}
+            </div>
+        </div>
+    </div>
+    `;
+}
+
+document.addEventListener("DOMContentLoaded", async function(){
+    const thungChuaPhim = document.getElementById("danhSachPhimHan");
+    const thungChuaXepHang = document.getElementById("danhSachXepHang");
+    if(thungChuaPhim && thungChuaXepHang) {
+        try{
+            const response = await fetch(API_MOVIE_URL);
+            if(!response.ok) throw new Error('Không thể tải danh sách phim từ API.');
+            const movies = await response.json();
+            if(movies.length === 0){
+                thungChuaPhim.innerHTML = "<p>Chưa có phim nào đang chiếu.</p>";
+                thungChuaXepHang.innerHTML = "<p>Chưa có phim xếp hạng.</p>";
+            }
+            else{
+                const moviesForGrid = movies; 
+                let allMoviesHTML = moviesForGrid.map(createMovieItemHTML).join('');
+                thungChuaPhim.innerHTML = allMoviesHTML;
+                const rankedMovies = movies.slice(0, 7); 
+                let allRankingsHTML = rankedMovies.map(createRankingItemHTML).join('');
+                thungChuaXepHang.innerHTML = allRankingsHTML;
+            }
+        }
+        catch(error){
+            console.error("Lỗi tải phim:", error);
+            thungChuaPhim.innerHTML = "<p style='color:red;'>Lỗi kết nối Server Catalog.</p>";
+            thungChuaXepHang.innerHTML = "<p style='color:red;'>Lỗi kết nối Server Catalog.</p>";
+        }
+    }
+    const today = new Date().toISOString().split('T')[0];
+    await renderSchedule(today);
 });
+
+async function renderSchedule(date){
+    const container = document.getElementById('showtime-list-container');
+    if(!container) return;
+    
+    container.innerHTML = "<p style='color: #ccc; text-align: center;'>Đang tải lịch chiếu...</p>";
+
+    try{
+        const response = await fetch(`${API_SHOWTIME_URL}?date=${date}`);
+        if(!response.ok) throw new Error('Không thể tải lịch chiếu từ Booking Service.');
+        const showtimesGroupedByMovie = await response.json();
+        if(showtimesGroupedByMovie.length === 0){
+            container.innerHTML = "<p style='color: #ccc; text-align: center;'>Không có suất chiếu vào ngày này.</p>";
+            return;
+        }
+        let htmlContent = '';
+        showtimesGroupedByMovie.forEach(group => {
+            htmlContent += createShowtimeBlock(group, group.showtimes); 
+        });
+        container.innerHTML = htmlContent;
+    }
+    catch(error){
+        console.error("Lỗi tải lịch chiếu:", error);
+        container.innerHTML = "<p style='color:red; text-align: center;'>Lỗi tải lịch chiếu. Vui lòng kiểm tra Server Booking.</p>";
+    }
+}

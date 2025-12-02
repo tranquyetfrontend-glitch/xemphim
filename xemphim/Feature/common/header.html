@@ -23,13 +23,21 @@
                 <a href="#">Giới thiệu</a>
             </nav>
             <div class="user-control">
-                <div class="user-actions">
+                <div class="user-actions" id="guest-actions">
                     <button class="btn-secondary">Đăng ký</button>
                     <button class="btn-login">Đăng nhập</button>
                 </div>
-                <div class="user-info" style="display: none;">
-                    <span id="user-greeting">Xin chào</span>
-                    <button id="btn-logout" style="margin-left: 10px;">Đăng xuất</button>
+                <div class="user-info" id="logged-in-user" style="display: none;">
+                    <div class="user-dropdown-toggle">
+                        <span class="user-icon">👤</span>
+                        <span class="user-greeting" id="user-greeting">Trần Quyết</span> 
+                        <span class="dropdown-arrow">▼</span>
+                    </div>
+                    <div class="user-dropdown-menu" id="user-menu">
+                        <a href="#" class="dropdown-item">Thông tin cá nhân</a>
+                        <a href="#" class="dropdown-item">Thẻ thành viên</a>
+                        <a href="#" class="dropdown-item" id="btn-logout">Đăng xuất</a> 
+                    </div>
                 </div>
             </div>
         </div>

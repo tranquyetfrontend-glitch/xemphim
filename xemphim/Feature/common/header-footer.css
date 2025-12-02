@@ -124,3 +124,58 @@ body{
     margin-top: 20px !important;
     font-size: 11px !important;
 }
+
+.user-info{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.user-dropdown-toggle{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 5px 10px;
+    color: white;
+}
+
+.user-icon{
+    font-size: 1.2em;
+    margin-right: 5px;
+}
+
+.dropdown-arrow{
+    margin-left: 5px;
+    font-size: 0.7em;
+}
+
+.user-dropdown-menu{
+    display: none;
+    position: absolute;
+    top: 100%; 
+    right: 0;
+    margin-top: 5px; 
+    background-color: #333;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    min-width: 180px;
+    padding: 5px 0;
+}
+
+.user-dropdown-menu.active{
+    display: block;
+}
+
+.user-dropdown-menu .dropdown-item{
+    display: block;
+    padding: 10px 15px;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.user-dropdown-menu .dropdown-item:hover{
+    background-color: #444; 
+}
