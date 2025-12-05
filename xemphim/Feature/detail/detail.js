@@ -11,6 +11,7 @@ const COUPLE_SEATS_RIGHT = ['I2', 'I4', 'I6', 'I8', 'I10'];
 const SEAT_PER_ROW = 11;
 let currentMovie = {};
 let currentSelectedTime = "";
+let currentShowtimeDetails = {};
 
 function startCountdown(durationSeconds){
     let timer = durationSeconds, minutes, seconds;
@@ -173,9 +174,10 @@ function handleCheckout(){
     if(countdownInterval){
         clearInterval(countdownInterval);
     }
-    const paymentData = {
+    const paymentData ={
+        showtimeId: currentShowtimeDetails.showtimeId,
         movieTitle: currentMovie.title,
-        showtime: currentSelectedTime,
+        showtimeTime: currentSelectedTime,
         seats: seatsToCheckout,
         total: total,
     };
@@ -188,17 +190,19 @@ Hàm chính: Thay thế khối lịch chiếu bằng giao diện chọn ghế
 @param {string} time - giờ chiếu đã chọn
 @param {string} movieTitle - tên phim
 */
-function renderSeatSelection(time, movie){
+function renderSeatSelection(movie, selectedShowtime){
     const showtimeSection = document.querySelector('.showtime-section');
     if(!showtimeSection) return;
     currentMovie =movie;
-    currentSelectedTime = time;
+    currentSelectedTime = selectedShowtime.time;
+    currentShowtimeDetails = selectedShowtime; 
     selectedSeats = [];
+    const timeStr = new Date(selectedShowtime.time).toLocaleTimeString('vi-VN', {hour: '2-digit', minute:'2-digit'});
     let seatHTML=`
     <div class="seat-selection-content">
         <div class="showtime-header">
-            <span class="movie-title-display">${movie.tieuDe}</span>
-            <span class="showtime-display">Giờ chiếu: ${time}</span>
+            <span class="movie-title-display">${movie.title}</span>
+            <span class="showtime-display">Giờ chiếu: ${timeStr}</span>
             <span class="timer-display">Thời gian chọn ghế: <span id="countdown">10:00</span></span>
         </div>
         <div class="screen-area">
@@ -254,7 +258,7 @@ document.addEventListener("DOMContentLoaded",async function(){
         return;
     }
     try{
-        const response = await fetch(`http://127.0.0.1:3001/api/movies/${movieId}`);
+        const response = await fetch(`http://127.0.0.1:3002/api/movies/${movieId}`);
         if(!response.ok){
             throw new Error('Không thể tải thông tin phim.');
         }
@@ -328,8 +332,10 @@ document.addEventListener("DOMContentLoaded",async function(){
                     hasShowtime = true;
                     const cinemaDiv = document.createElement('div');
                     cinemaDiv.className = 'cinema-group';
-                    cinemaDiv.innerHTML = `<h4 style="color:#e71a0f; margin:10px 0;">${cinema.cinemaName}</h4>`;
-                    
+                    cinemaDiv.innerHTML = `
+                        <h4 style="color:white; margin:10px 0; border-left: 4px solid #e71a0f; padding-left:10px;">
+                            ${cinema.cinemaName} - ${cinema.address}
+                        </h4>`;
                     const timesDiv = document.createElement('div');
                     timesDiv.className = 'cinema-times';
                     validTimes.forEach(slot => {
@@ -339,9 +345,9 @@ document.addEventListener("DOMContentLoaded",async function(){
                         btn.href = "#";
                         btn.className = 'time-slot-btn';
                         btn.textContent = timeStr;
-                        btn.addEventListener('click', (e) => {
+                        btn.addEventListener('click', (e) =>{
                             e.preventDefault();
-                            renderSeatSelection(timeStr, phim);
+                            renderSeatSelection(phim, slot);
                         });
                         timesDiv.appendChild(btn);
                     });

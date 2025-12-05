@@ -1,5 +1,5 @@
-const API_MOVIE_URL = 'http://127.0.0.1:3001/api/movies';
-const API_SHOWTIME_URL = 'http://127.0.0.1:3001/api/showtimes/schedule';
+const API_MOVIE_URL = 'http://127.0.0.1:3002/api/movies';
+const API_SHOWTIME_URL = 'http://127.0.0.1:3002/api/showtimes/schedule';
 function createMovieItemHTML(movie){
     return `
     <a href="../detail/chi-tiet-phim.html?id=${movie.movie_id}">
