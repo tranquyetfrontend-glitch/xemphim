@@ -28,21 +28,22 @@ export class ShowtimeRepository{
         SELECT
         st.showtime_id,
         st.start_time,
-        st.base_price,
+        st.end_time,
         st.format,
-        c.name AS cinema_name,
-        c.address AS cinema_address,
-        r.room_id,
-        r.name AS room_name
+        st.base_price,
+        st.room_id,
+        r.name AS room_name,
+        c.cinema_id, 
+        c.name AS cinema_name, 
+        c.address AS cinema_address
         FROM booking.showtimes st
         JOIN catalog.rooms r ON st.room_id = r.room_id
-        JOIN catalog.cinemas c ON r.cinema_id = c.cinema_id
-        WHERE st.movie_id = $1
-        AND st.start_time >= $2
-        ORDER BY
+        JOIN catalog.cinemas c ON r.cinema_id = c.cinema_id  -- (3) JOIN với Cinemas
+        WHERE st.movie_id = $1 AND st.start_time > NOW()
+        ORDER BY 
         st.start_time;
     `;
-    const result = await pool.query(sql, [movieId, today]); 
+    const result = await pool.query(sql, [movieId]);
     return result.rows;
     }
 
@@ -61,6 +62,36 @@ export class ShowtimeRepository{
             format,
             basePrice
         ]);
+        return result.rows[0];
+    }
+
+    async getSeatAvailability(showtimeId){
+        const sql = `
+        SELECT 
+        seat_id,
+        status,
+        hold_expires_at
+        FROM booking.seat_availability 
+        WHERE showtime_id = $1;
+        `;
+        const result = await pool.query(sql, [showtimeId]);
+        return result.rows; 
+    }
+
+    async findShowtimeById(showtimeId) {
+        const sql = `
+        SELECT
+        st.showtime_id,
+        st.room_id,
+        st.base_price,
+        st.start_time,
+        r.name AS room_name,
+        r.cinema_id
+        FROM booking.showtimes st
+        JOIN catalog.rooms r ON st.room_id = r.room_id
+        WHERE st.showtime_id = $1;
+        `;
+        const result = await pool.query(sql, [showtimeId]);
         return result.rows[0];
     }
 }

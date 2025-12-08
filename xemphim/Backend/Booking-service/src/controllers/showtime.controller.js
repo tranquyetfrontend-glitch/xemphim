@@ -17,4 +17,17 @@ export class ShowtimeController{
             return res.status(500).json({error: 'Lỗi khi lấy lịch chiếu: ' + error.message});
         }
     }
+
+    async getSeatAvailability(req, res){
+        try{
+            const {showtimeId} = req.params;
+            const seatMapData = await SHOWTIME_SERVICE.getSeatMapAndAvailability(showtimeId);
+            console.log('Controller received data keys:', Object.keys(seatMapData));
+            return res.status(200).json(seatMapData);
+        }
+        catch(error){
+            console.error('Lỗi tại ShowtimeController (getSeatAvailability):', error);
+            return res.status(500).json({error: 'Lỗi khi lấy sơ đồ ghế: ' + error.message});
+        }
+    }
 }

@@ -78,26 +78,36 @@ export class ShowtimeService{
     }
 
     async getSeatMapAndAvailability(showtimeId){
-        const showtimeInfo = await SHOWTIME_REPO.findShowtimeById(showtimeId);
+        const showtimeInfo = await SHOWTIME_REPO.findShowtimeById(showtimeId); 
         if(!showtimeInfo){
             throw new Error('Suất chiếu không tồn tại.');
         }
         const roomId = showtimeInfo.room_id;
-        let seatMap = [];
-        try{
-            const response = await axios.get(
-                `${CATALOG_SERVICE_URL}/api/rooms/${roomId}/seats`
-            );
-            seatMap = response.data;
-        }
-        catch(error){
-            console.error("Lỗi khi gọi Catalog Service lấy sơ đồ ghế:", error.message);
-        }
+        const seatMapResponse = await axios.get(
+            `${CATALOG_SERVICE_URL}/api/rooms/${roomId}/seats`
+        );
+        const physicalSeats = seatMapResponse.data;
         const seatAvailability = await SHOWTIME_REPO.getSeatAvailability(showtimeId);
+        const availabilityMap = new Map();
+        seatAvailability.forEach(s =>{
+            availabilityMap.set(s.seat_id, s); 
+        });
+        const finalSeatMap = physicalSeats.map(seat=>{
+            const availability = availabilityMap.get(seat.seat_id);
+            const status = availability ? availability.status : 'AVAILABLE';
+            const holdExpiresAt = null;
+            return{
+                ...seat,
+                status: status, 
+                hold_expires_at: holdExpiresAt
+            };
+        });
         return{
+            showtime_id: showtimeId,
             room_id: roomId,
-            seat_map: seatMap,
-            showtime_info: showtimeInfo
+            room_name: showtimeInfo.room_name,
+            seat_map: finalSeatMap,
+            base_price: showtimeInfo.base_price 
         };
     }
 }

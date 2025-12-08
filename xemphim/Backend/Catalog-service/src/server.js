@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
 import movieRouter from '../src/routers/movie.router.js';
+import roomRouter from '../src/routers/room.router.js';
 
 dotenv.config();
 const app = express();
@@ -18,6 +19,7 @@ const corsOptions={
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/api/movies', movieRouter);
+app.use('/api/rooms', roomRouter);
 app.listen(PORT,()=>{
     console.log(`Catalog Service đang chạy trên cổng: ${PORT}`);
 });
