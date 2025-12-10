@@ -1,0 +1,26 @@
+{
+  "name": "payment-service",
+  "version": "1.0.0",
+  "description": "Payment microservice for movie booking system",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "keywords": [
+    "nodejs",
+    "express"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "axios": "^1.6.8" 
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
