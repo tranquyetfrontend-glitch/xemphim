@@ -28,4 +28,19 @@ export class OrderController{
             return res.status(500).json({error: 'Lỗi khi tạo đơn hàng:'+ error.message});
         }
     }
+
+    async confirmOrder(req, res){
+        try{
+            const{order_id, payment_status} = req.body;
+            if(!order_id || !payment_status){
+                return res.status(400).json({error: 'Thiếu order_id hoặc payment_status.'});
+            }
+            const result = await ORDER_SERVICE.confirmOrder(parseInt(order_id,10), payment_status);
+            return res.status(200).json(result);
+        }
+        catch(error){
+            console.error('Lỗi tại OrderController (confirmOrder):', error);
+            return res.status(500).json({error: 'Lỗi khi xác nhận đơn hàng: ' + error.message});
+        }
+    }
 }

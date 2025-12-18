@@ -66,4 +66,20 @@ export class OrderService{
             throw new Error('Lỗi kết nối hoặc xử lý thanh toán.');
         }
     }
+    async confirmOrder(orderId, paymentStatus){
+        const updateOrder = await ORDER_REPO.updateOrderStatus(orderId, paymentStatus);
+        if(paymentStatus === 'PAID'){
+            const{showtime_id} = updateOrder;
+            const seatIds = await ORDER_REPO.getHeldSeatsForOrder(orderId);
+            if(seatIds.length === 0){
+                return {message: "Đơn hàng chỉ có combo, đã có PAID.", order: updateOrder};
+            }
+            await ORDER_REPO.bookSeats(showtime_id, seatIds.map(s => s.seat_id));
+            return {message: "Đơn hàng đã được xác nhận và ghế đã được BOOKED.", order: updateOrder};
+        }
+        else{
+            await ORDER_REPO.releaseHeldSeats(orderId);
+            return {message: "Đơn hàng thất bại, ghế đã được nhả.", order: updateOrder};
+        }
+    }
 }

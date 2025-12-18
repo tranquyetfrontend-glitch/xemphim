@@ -1,8 +1,6 @@
 import {SchedulerService} from '../services/scheduler.service.js';
-import {ShowtimeService} from '../services/showtime.service.js';
 
 const SCHEDULER_SERVICE = new SchedulerService();
-const SHOWTIME_SERVICE = new ShowtimeService();
 
 export class SchedulerController{
     async generateShowtimes(req, res){  

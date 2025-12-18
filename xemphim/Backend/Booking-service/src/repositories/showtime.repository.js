@@ -78,7 +78,7 @@ export class ShowtimeRepository{
         return result.rows; 
     }
 
-    async findShowtimeById(showtimeId) {
+    async findShowtimeById(showtimeId){
         const sql = `
         SELECT
         st.showtime_id,
@@ -93,5 +93,10 @@ export class ShowtimeRepository{
         `;
         const result = await pool.query(sql, [showtimeId]);
         return result.rows[0];
+    }
+
+    async clearFutureShowtimes(days){
+        const query = `DELETE FROM showtimes WHERE start_time > NOW()`;
+        return await pool.query(query);
     }
 }

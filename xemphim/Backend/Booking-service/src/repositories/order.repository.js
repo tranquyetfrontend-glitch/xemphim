@@ -67,4 +67,51 @@ export class OrderRepository{
         }
         return {seatInfo: showtimeResult.rows, comboPrices: comboPrices};
     }
+
+    //Cập nhật trạng thái đơn hàng
+    async updateOrderStatus(orderId, status){
+        const sql = `
+        UPDATE booking.orders
+        SET payment_status = $2, updated_at = CURRENT_TIMESTAMP
+        WHERE order_id = $1
+        RETURNING order_id, showtime_id, payment_status;
+        `;
+        const result = await pool.query(sql, [orderId,status]);
+        if(result.rows.length ===0){
+            throw new Error(`Không tìm thấy đơn hàng ID: ${orderId}`);
+        }
+        return result.rows[0];
+    }
+
+    //Lấy danh sách ghế đã được giữ cho đơn hàng này
+    async getHeldSeatsForOrder(orderId){
+        const sql = `
+        SELECT seat_res_id AS seat_id
+        FROM booking.order_details
+        WHERE order_id = $1 AND type = 'TICKET';
+        `;
+        const result = await pool.query(sql, [orderId]);
+        return result.rows;
+    }
+
+    //Nhả ghế HELD về AVAILABLE (Dùng khi thanh toán thất bại)
+    async releaseHeldSeats(orderId){
+        const orderSql = `SELECT showtime_id FROM booking.orders WHERE order_id = $1`;
+        const orderResult = await pool.query(orderSql, [orderId]);
+        if(orderResult.rows.length === 0) return 0;
+        const showtimeId = orderResult.rows[0].showtime_id;
+        const seatIds = (await this.getHeldSeatsForOrder(orderId)).map(s => s.seat_id);
+        if(seatIds.length === 0) return 0;
+        const releaseSql = `
+        UPDATE booking.seat_availability
+        SET status = 'AVAILABLE', hold_expires_at = NULL
+        WHERE 
+        showtime_id = $1 
+        AND seat_id = ANY($2::UUID[])
+        AND status = 'HELD'
+        RETURNING seat_id;
+        `;
+        const result = await pool.query(releaseSql, [showtimeId, seatIds]);
+        return result.rowCount;
+    }
 }

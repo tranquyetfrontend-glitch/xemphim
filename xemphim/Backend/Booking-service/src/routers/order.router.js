@@ -8,5 +8,9 @@ router.post(
     '/create',
     ORDER_CONTROLLER.createOrder.bind(ORDER_CONTROLLER)
 );
+router.post(
+    '/confirm',
+    ORDER_CONTROLLER.confirmOrder.bind(ORDER_CONTROLLER)
+);
 
 export default router;

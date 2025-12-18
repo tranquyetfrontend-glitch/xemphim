@@ -10,7 +10,7 @@ router.post(
 );
 router.post(
     '/callback',
-    PAYMENT_CONTROLLER.handPaymentCallback.bind(PAYMENT_CONTROLLER)
+    PAYMENT_CONTROLLER.handlePaymentCallback.bind(PAYMENT_CONTROLLER)
 );
 
 export default router;
