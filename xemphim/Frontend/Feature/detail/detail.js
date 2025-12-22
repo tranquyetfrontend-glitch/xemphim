@@ -11,87 +11,114 @@ let currentMovie = {};
 let currentSelectedTime = "";
 let currentShowtimeDetails = {};
 
-//HÀM startCountdown
 function startCountdown(durationSeconds){
     let timer = durationSeconds, minutes, seconds;
     if(countdownInterval) clearInterval(countdownInterval);
     const displayElement = document.getElementById('countdown');
     if(!displayElement) return;
-    countdownInterval = setInterval(()=>{
-        minutes = parseInt(timer / 60,10);
-        seconds = parseInt(timer % 60,10);
-        minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
-        displayElement.textContent = minutes + ":" + seconds;
+    countdownInterval = setInterval(() => {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+        displayElement.textContent = `${minutes < 10 ? "0" + minutes : minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
         if(--timer < 0){
             clearInterval(countdownInterval);
-            alert("Đã hết thời gian chọn ghế. Vui lòng thử lại!"); 
+            alert("Đã hết thời gian chọn ghế. Vui lòng thử lại!");
             window.location.reload();
         }
-    },1000);
+    }, 1000);
 }
 
 //HÀM CLICK GHẾ
 function handleSeatClick(event) {
     const seat = event.target;
     const seatId = seat.dataset.id;
-    const seatType = seat.dataset.type;
+    const seatType = seat.dataset.type.toUpperCase();
+    const rowLabel = seat.dataset.row;
+    const seatNum = parseInt(seat.dataset.num);
     if(seat.classList.contains('selected')){
-        seat.classList.remove("selected");
-        selectedSeats = selectedSeats.filter(id => id !== seatId);
-        console.log(`Đã bỏ chọn ghế loại: ${seatType}`); 
+        if(seatType === 'COUPLE'){
+            const partnerNum = seatNum % 2 === 0 ? seatNum - 1 : seatNum + 1;
+            const partner = document.querySelector(`[data-row="${rowLabel}"][data-num="${partnerNum}"]`);
+            seat.classList.remove("selected");
+            if(partner) partner.classList.remove("selected");
+            selectedSeats = selectedSeats.filter(id => id !== seatId && (partner ? id !== partner.dataset.id : true));
+        }
+        else{
+            seat.classList.remove("selected");
+            selectedSeats = selectedSeats.filter(id => id !== seatId);
+        }
     }
     else{
-        if(selectedSeats.length >= 8){
-            alert("Bạn chỉ được chọn tối đa 8 ghế");
-            return;
+        if(seatType === 'COUPLE'){
+            const partnerNum = seatNum % 2 === 0 ? seatNum - 1 : seatNum + 1;
+            const partner = document.querySelector(`[data-row="${rowLabel}"][data-num="${partnerNum}"]`);
+            if(partner && !partner.classList.contains('reserved')){
+                seat.classList.add('selected');
+                partner.classList.add('selected');
+                if(!selectedSeats.includes(seatId)) selectedSeats.push(seatId);
+                if(!selectedSeats.includes(partner.dataset.id)) selectedSeats.push(partner.dataset.id);
+            }
+            else{
+                alert("Cặp ghế đôi này không khả dụng đủ bộ.");
+            }
         }
-        seat.classList.add('selected');
-        selectedSeats.push(seatId);
-        console.log(`Đã chọn ghế loại: ${seatType}`);
+        else{
+            seat.classList.add('selected');
+            selectedSeats.push(seatId);
+        }
     }
     updateSelectionSummary();
 }
 
 //HÀM TÍNH TIỀN
-function updateSelectionSummary(returnTotal = false){
+function updateSelectionSummary(returnTotal = false) {
     const seatDisplay = document.getElementById('selected-seats-display');
     const priceDisplay = document.getElementById('total-price-display');
     if(selectedSeats.length === 0){
         if(!returnTotal){
-            seatDisplay.textContent = '...';
-            priceDisplay.textContent = '0đ';
+            if(seatDisplay) seatDisplay.textContent = '...';
+            if(priceDisplay) priceDisplay.textContent = '0đ';
         }
         return 0;
     }
     let total = 0;
+    let seatNames = [];
     selectedSeats.forEach(seatId =>{
         const seatEl = document.querySelector(`[data-id="${seatId}"]`);
-        const type = seatEl ? seatEl.dataset.type : 'STANDARD';
-        if (type === 'VIP') total += VIP_PRICE;
-        else if (type === 'COUPLE') total += (COUPLE_PRICE / 2);
-        else total += SEAT_PRICE;
+        if(seatEl){
+            const type = seatEl.dataset.type.toUpperCase();
+            const name = `${seatEl.dataset.row}${seatEl.dataset.num}`;
+            seatNames.push(name);
+            if (type === 'VIP') total += VIP_PRICE;
+            else if (type === 'COUPLE') total += (COUPLE_PRICE / 2);
+            else total += SEAT_PRICE;
+        }
     });
-    if(!returnTotal){
-        seatDisplay.textContent = [...selectedSeats].sort().join(', ');
-        priceDisplay.textContent = `${total.toLocaleString('vi-VN')}đ`;
+    if (!returnTotal){
+        if(seatDisplay) seatDisplay.textContent = seatNames.sort().join(', ');
+        if(priceDisplay) priceDisplay.textContent = `${total.toLocaleString('vi-VN')}đ`;
     }
     return total;
 }
 
 //HÀM THANH TOÁN
-async function handleCheckout() {
+async function handleCheckout(){
     if(selectedSeats.length === 0){
         alert('Vui lòng chọn ít nhất một ghế');
         return;
     }
     const total = updateSelectionSummary(true);
+    const seatNames = selectedSeats.map(id =>{
+        const el = document.querySelector(`[data-id="${id}"]`);
+        return el ? `${el.dataset.row}${el.dataset.num}` : id;
+    })
     try{
+        const sID = currentShowtimeDetails.showtime_id || currentShowtimeDetails.id;
         const response = await fetch(`${GATEWAY_URL}/bookings/bookings/hold-seats`,{
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                showtime_id: currentShowtimeDetails.showtime_id,
+                showtime_id: sID,
                 user_id: 1,
                 seat_ids: selectedSeats
             })
@@ -99,48 +126,58 @@ async function handleCheckout() {
         const result = await response.json();
         if(response.ok){
             localStorage.setItem('paymentData', JSON.stringify({
-                showtimeId: currentShowtimeDetails.showtime_id,
+                showtimeId: sID,
                 movieTitle: currentMovie.title,
                 seats: selectedSeats,
+                seatNames: seatNames,
                 total: total,
                 holdExpiresAt: result.hold_expires_at
             }));
             window.location.href = '../payment/thanh-toan.html';
         }
         else{
-            alert(result.message || "Ghế đã có người khác nhanh tay chọn trước!");
-            window.location.reload();
+            alert(result.message || "Ghế đã có người khác chọn trước!");
         }
     }
-    catch(error){
+    catch (error){
         alert("Lỗi kết nối Server Booking.");
     }
 }
 
+//LẤY SƠ ĐỒ GHẾ
 async function fetchSeatMap(showtimeId){
     try{
         const response = await fetch(`${GATEWAY_URL}/bookings/showtimes/${showtimeId}/seats`);
-        if(!response.ok) throw new Error("404");
-        return await response.json();
+        if (!response.ok) throw new Error("404");
+        const data = await response.json();
+        return data.seat_map || data;
     }
-    catch(error){
+    catch (error){
         console.error("Lỗi API Ghế", error);
         return null;
     }
 }
 
+//HIỂN THỊ CHỌN GHẾ
 async function renderSeatSelection(movie, selectedShowtime){
-    const seatData = await fetchSeatMap(selectedShowtime.showtime_id);
-    if(!seatData){
+    const sID = selectedShowtime.showtime_id || selectedShowtime.showtimeId || selectedShowtime.id;
+    if(!sID){
+        console.error("Dữ liệu showtime bị thiếu ID:", selectedShowtime);
+        alert("Không tìm thấy ID suất chiếu.");
+        return;
+    }
+    console.log("Đang gọi API lấy ghế cho showtime_id:", sID);
+    const seats = await fetchSeatMap(sID);
+    if(!seats || seats.length === 0){
         alert("Suất chiếu này hiện chưa có sơ đồ ghế.");
         return;
     }
     const showtimeSection = document.querySelector('.showtime-section');
     if(!showtimeSection) return;
     currentMovie = movie;
-    currentShowtimeDetails = selectedShowtime; 
+    currentShowtimeDetails = selectedShowtime;
     selectedSeats = [];
-    const timeStr = new Date(selectedShowtime.time).toLocaleTimeString('vi-VN', {hour: '2-digit', minute:'2-digit'});
+    const timeStr = new Date(selectedShowtime.time).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
     showtimeSection.innerHTML = `
     <div class="seat-selection-content">
         <div class="showtime-header">
@@ -174,57 +211,42 @@ async function renderSeatSelection(movie, selectedShowtime){
         </div>
     </div>
     `;
-    initializeSeatMapFromAPI(seatData.seat_map);
+    initializeSeatMapFromAPI(seats);
     startCountdown(600);
     document.getElementById('cancel-selection-btn').onclick = () => window.location.reload();
     document.getElementById('checkout-btn').onclick = handleCheckout;
 }
 
+//VẼ GHẾ LÊN GRID
 function initializeSeatMapFromAPI(seatMap){
     const seatMapGrid = document.getElementById('seat-map-grid');
     if(!seatMapGrid) return;
+    seatMapGrid.innerHTML = "";
     const rows = {};
     seatMap.forEach(seat =>{
+        if(seat.row_label.toUpperCase() === 'J') return; 
         if(!rows[seat.row_label]) rows[seat.row_label] = [];
         rows[seat.row_label].push(seat);
     });
-    Object.keys(rows).sort().forEach(rowLabel =>{
+    Object.keys(rows).sort().forEach(label =>{
         const rowDiv = document.createElement('div');
         rowDiv.className = 'seat-row';
-        rowDiv.innerHTML = `<span class="row-label">${rowLabel}</span>`;
-        rows[rowLabel].forEach(seatData =>{
+        rowDiv.innerHTML = `<span class="row-label">${label}</span>`;
+        rows[label].sort((a, b) => a.seat_number - b.seat_number).forEach(s => {
             const seat = document.createElement('div');
-            seat.className = `seat ${seatData.status.toLowerCase()} ${seatData.type.toLowerCase()}`;
-            seat.dataset.id = seatData.seat_id;
-            seat.dataset.type = seatData.type;
-            seat.textContent = seatData.seat_number;
-            if(seatData.status === 'AVAILABLE'){
-                seat.onclick = handleSeatClick;
-            }
+            const status = s.status.toLowerCase();
+            const type = s.type.toLowerCase();
+            seat.className = `seat ${status} ${type}`;
+            seat.dataset.id = s.seat_id;
+            seat.dataset.type = s.type;
+            seat.dataset.row = label;
+            seat.dataset.num = s.seat_number;
+            seat.textContent = s.seat_number;
+            if(status === 'available') seat.onclick = handleSeatClick;
             rowDiv.appendChild(seat);
         });
         seatMapGrid.appendChild(rowDiv);
     });
-}
-
-function renderMovieDetail(phim, container){
-    document.title = phim.title || "Chi tiết phim";
-    container.innerHTML = `
-    <div class="detail-layout">
-        <div class="detail-poster">
-            <img src="${phim.poster_url}" alt="${phim.title}">
-        </div>
-        <div class="detail-info">
-            <h1>${phim.title}</h1>
-            <p><strong>Thời Lượng:</strong> ${phim.duration_minutes} phút</p>
-            <p>${phim.description || 'Chưa có mô tả.'}</p>
-        </div>
-    </div>
-    <div class="showtime-section">
-        <div id="date-list" class="showtime-dates"></div>
-        <div id="time-slots-container" class="time-slots-container"></div>
-    </div>
-    `;
 }
 
 function renderDateSelector(phim){
@@ -243,8 +265,7 @@ function renderDateSelector(phim){
             <span class="day-of-week">Th.${month}</span>
             <span class="day-num">${dayNum}</span>
             <span class="day-name">${dayName}</span>
-        </div>
-        `;
+        </div>`;
     }
     dateListContainer.innerHTML = datesHTML;
     const dateItems = document.querySelectorAll('.date-item');
@@ -276,11 +297,20 @@ function renderTimesByDate(phim, selectedDate){
             const timesDiv = document.createElement('div');
             timesDiv.className = 'cinema-times';
             validTimes.forEach(slot =>{
-                const timeStr = new Date(slot.time).toLocaleTimeString('vi-VN', {hour: '2-digit', minute:'2-digit'});
+                const timeStr = new Date(slot.time).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
                 const btn = document.createElement('button');
                 btn.className = 'time-slot-btn';
                 btn.textContent = timeStr;
-                btn.onclick = () => renderSeatSelection(phim, slot);
+                btn.onclick = () =>{
+                    console.log("Dữ liệu slot khi click:", slot);
+                    const validID = slot.showtime_id || slot.showtimeId || slot.id;
+                    if(!validID){
+                    alert("Lỗi: Suất chiếu này không có ID hợp lệ!");
+                    return;
+                    }
+                    slot.showtime_id = validID; 
+                    renderSeatSelection(phim, slot);
+                };
                 timesDiv.appendChild(btn);
             });
             cinemaDiv.appendChild(timesDiv);
@@ -288,7 +318,7 @@ function renderTimesByDate(phim, selectedDate){
         }
     });
     if(!foundAny){
-        timeSlotsContainer.innerHTML = '<p style="color:#999; text-align:center;">Không có suất chiếu vào ngày này.</p>';
+        timeSlotsContainer.innerHTML = '<p style="color:#ccc; text-align:center;">Không có suất chiếu vào ngày này.</p>';
     }
 }
 
@@ -309,7 +339,7 @@ document.addEventListener("DOMContentLoaded", async function(){
             bgContainer.style.setProperty('--detail-bg-image', `url(${phim.poster_url})`);
         }
         document.title = phim.title;
-        const detailHTML = `
+        container.innerHTML = `
         <div class="detail-layout">
             <div class="detail-poster">
                 <img src="${phim.poster_url}" alt="${phim.title}" onerror="this.src='https://via.placeholder.com/300x450'">
@@ -329,14 +359,12 @@ document.addEventListener("DOMContentLoaded", async function(){
         </div>
         <div class="showtime-section">
             <h3 class="section-title">LỊCH CHIẾU</h3>
-            <div class="showtime-dates" id="date-list">
-                </div>
+            <div class="showtime-dates" id="date-list"></div>
             <div id="time-slots-container" class="time-slots-container">
                 <p style="color:#ccc; text-align:center;">Vui lòng chọn ngày để xem suất chiếu.</p>
             </div>
-        </div>
-        `;
-        container.innerHTML = detailHTML;
+        </div>`;
+        
         renderDateSelector(phim);
     }
     catch(error){

@@ -48,7 +48,6 @@ function createShowtimeBlock(movie, showtimeData){
         const timeStr = timeObj.toLocaleTimeString('vi-VN', {hour: '2-digit', minute:'2-digit'});
         return `<a href="../detail/chi-tiet-phim.html?id=${movie.movie_id}&time=${timeStr}" class="time-slot-btn">${timeStr}</a>`;
     }).join('');
-
     return `
     <div class="schedule-movie-item">
         <img src="${movie.poster_url}" alt="${movie.title}" onerror="this.src='https://via.placeholder.com/100x150'">
@@ -97,9 +96,7 @@ document.addEventListener("DOMContentLoaded", async function(){
 async function renderSchedule(date){
     const container = document.getElementById('showtime-list-container');
     if(!container) return;
-    
     container.innerHTML = "<p style='color: #ccc; text-align: center;'>Đang tải lịch chiếu...</p>";
-
     try{
         const response = await fetch(`${API_SHOWTIME_URL}?date=${date}`);
         if(!response.ok) throw new Error('Không thể tải lịch chiếu từ Booking Service.');

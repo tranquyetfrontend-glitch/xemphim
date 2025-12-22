@@ -14,7 +14,7 @@ const{
     AUTH_SERVICE_URL,
     CATALOG_SERVICE_URL,
     BOOKING_SERVICE_URL,
-    PAYMENT_SERVICE_URL
+    PAYMENT_SERVICE_URL 
 } = process.env;
 
 const createPathRewriter = (servicePrefix) => {

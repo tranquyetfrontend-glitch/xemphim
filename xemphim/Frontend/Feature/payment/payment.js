@@ -1,6 +1,6 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () =>{
     const paymentDataJSON = localStorage.getItem('paymentData');
-    if (!paymentDataJSON) {
+    if(!paymentDataJSON){
         alert('Không tìm thấy thông tin vé. Quay về trang chủ.');
         window.location.href = '../home/index.html';
         return;
@@ -14,12 +14,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('payment-movie-title').textContent = data.movieTitle;
     document.getElementById('payment-showtime').textContent = data.showtime;
     document.getElementById('payment-format').textContent = data.dinhDang || '2D';
-    document.getElementById('payment-room').textContent = data.phongChieu || '13'; 
-    document.getElementById('payment-seats').textContent = data.seats.join(', ');
+    document.getElementById('payment-room').textContent = data.phongChieu || '13';
+    const displaySeats = data.seatNames ? data.seatNames : data.seats;
+    document.getElementById('payment-seats').textContent = displaySeats.join(', ');
     
     const summaryBody = document.getElementById('payment-summary-body');
     const seatCount = data.seats.length;
-    
     const seatRowHTML = `
         <tr>
             <td>Vé (${seatCount} ghế)</td>
@@ -31,12 +31,12 @@ document.addEventListener('DOMContentLoaded', () => {
     
     document.getElementById('cost-subtotal').textContent = totalFormatted;
     const costFeeElement = document.getElementById('cost-fee');
-    if (costFeeElement) {
+    if(costFeeElement){
         costFeeElement.textContent = fee.toLocaleString('vi-VN') + 'đ';
     }
     document.getElementById('cost-total').textContent = finalTotalFormatted;
     const backBtn = document.getElementById('back-to-seats-btn');
-    if (backBtn) {
+    if(backBtn){
         backBtn.addEventListener('click', () => {
             window.history.back(); 
         });
@@ -51,8 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     const confirmPaymentBtn = document.getElementById('confirm-payment-btn');
-    if (confirmPaymentBtn) {
-        confirmPaymentBtn.addEventListener('click', () => {
+    if(confirmPaymentBtn){
+        confirmPaymentBtn.addEventListener('click', () =>{
             if (!selectedPaymentMethod) {
                 alert('Vui lòng chọn phương thức thanh toán.');
                 return;
