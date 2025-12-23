@@ -5,16 +5,16 @@ const PAYMENT_SERVICE = new PaymentService();
 export class PaymentController{
     async createPaymentLink(req, res){
         try{
-            const {order_id, amount, description} = req.body;
-            const paymentUrl = await PAYMENT_SERVICE.createMockPayment(order_id, amount, description);
-            return res.status(200).json({ 
-                message: 'Đã tạo link thanh toán thành công.',
-                payment_url: paymentUrl
+            const { order_id, amount, description } = req.body;
+            const payUrl = await PAYMENT_SERVICE.createMomoPayment(order_id, amount, description);
+            return res.status(200).json({
+                message: 'Đã tạo link thanh toán MoMo thành công.',
+                payment_url: payUrl
             });
         }
-        catch (error){
-            console.error('Lỗi tại PaymentController (createPaymentLink):', error);
-            return res.status(500).json({error: 'Lỗi khi xử lý thanh toán.'});
+        catch(error){
+            console.error('Lỗi tại PaymentController:', error);
+            return res.status(500).json({ error: error.message || 'Lỗi khi xử lý thanh toán.'});
         }
     }
 

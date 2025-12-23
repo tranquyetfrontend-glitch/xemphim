@@ -10,22 +10,22 @@ document.addEventListener('DOMContentLoaded', () =>{
     const finalTotal = data.total + fee;
     const totalFormatted = data.total.toLocaleString('vi-VN') + 'đ';
     const finalTotalFormatted = finalTotal.toLocaleString('vi-VN') + 'đ';
-    let selectedPaymentMethod = 'vietqr';
+    let selectedPaymentMethod = 'momo';
     document.getElementById('payment-movie-title').textContent = data.movieTitle;
     document.getElementById('payment-showtime').textContent = data.showtime;
     document.getElementById('payment-format').textContent = data.dinhDang || '2D';
-    document.getElementById('payment-room').textContent = data.phongChieu || '13';
+    document.getElementById('payment-room').textContent = data.phongChieu || 'Rạp 1';
     const displaySeats = data.seatNames ? data.seatNames : data.seats;
     document.getElementById('payment-seats').textContent = displaySeats.join(', ');
     
     const summaryBody = document.getElementById('payment-summary-body');
     const seatCount = data.seats.length;
     const seatRowHTML = `
-        <tr>
-            <td>Vé (${seatCount} ghế)</td>
-            <td>${seatCount}</td>
-            <td>${totalFormatted}</td>
-        </tr>
+    <tr>
+        <td>Vé (${seatCount} ghế)</td>
+        <td>${seatCount}</td>
+        <td>${totalFormatted}</td>
+    </tr>
     `;
     summaryBody.innerHTML = seatRowHTML;
     
@@ -35,29 +35,64 @@ document.addEventListener('DOMContentLoaded', () =>{
         costFeeElement.textContent = fee.toLocaleString('vi-VN') + 'đ';
     }
     document.getElementById('cost-total').textContent = finalTotalFormatted;
-    const backBtn = document.getElementById('back-to-seats-btn');
-    if(backBtn){
-        backBtn.addEventListener('click', () => {
-            window.history.back(); 
-        });
-    }
+
+    //xử lý phương thức thanh toán
     const paymentOptions = document.querySelectorAll('.payment-option');
     paymentOptions.forEach(option => {
         option.addEventListener('click', function() {
             paymentOptions.forEach(opt => opt.classList.remove('active'));
             this.classList.add('active');
             selectedPaymentMethod = this.getAttribute('data-method');
-            console.log('Phương thức thanh toán đã chọn:', selectedPaymentMethod);
         });
     });
+
+    //xử lý nút quay lại
+    const backBtn = document.getElementById('back-to-seats-btn');
+    if(backBtn){
+        backBtn.addEventListener('click', () => {
+            window.history.back(); 
+        });
+    }
+    
+    //xử lý xác nhận thanh toán
     const confirmPaymentBtn = document.getElementById('confirm-payment-btn');
     if(confirmPaymentBtn){
-        confirmPaymentBtn.addEventListener('click', () =>{
-            if (!selectedPaymentMethod) {
-                alert('Vui lòng chọn phương thức thanh toán.');
-                return;
+        confirmPaymentBtn.addEventListener('click', async () =>{
+            if(selectedPaymentMethod === 'momo'){
+                confirmPaymentBtn.disabled = true;
+                confirmPaymentBtn.textContent = "Đang kết nối MOMO ...";
+                try{
+                    const response = await fetch('http://localhost:8080/api/payments/create', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            order_id: "BILL_" + Date.now(),
+                            amount: finalTotal,
+                            description: `Thanh toán vé phim: ${data.movieTitle}`
+                        })
+                    });
+                    const result = await response.json();
+                    if(response.ok && result.payment_url){
+                        window.location.href = result.payment_url;
+                    }
+                    else{
+                        alert('Lỗi khởi tạo thah toán: '+ (result.error || 'Vui lòng thử lại.'));
+                        confirmPaymentBtn.disabled = false;
+                        confirmPaymentBtn.textContent = "Xác nhận thanh toán";
+                    }
+                }
+                catch(error){
+                    console.error('Lỗi kết nối Backend:', error);
+                    alert('Không thể kết nối đến máy chủ thanh toán.');
+                    confirmPaymentBtn.disabled = false;
+                    confirmPaymentBtn.textContent = "Xác nhận thanh toán";
+                }
             }
-            alert(`Xác nhận thanh toán ${finalTotalFormatted} bằng ${selectedPaymentMethod.toUpperCase()}. (Đang mô phỏng...)`);
+            else{
+                alert('Phương thức này đang được bảo trì, vui lòng chọn MoMo');
+            }
         });
     }
 });
