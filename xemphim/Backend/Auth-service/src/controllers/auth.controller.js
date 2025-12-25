@@ -102,3 +102,37 @@ export const resetPassword = async (req, res) =>{
         return res.status(400).json({message: error.message});
     }
 };
+
+export const getMe = async (req, res) =>{
+    try{
+        const userId = req.user.user_id; 
+        const user = await AUTH_SERVICE.getMe(userId);
+        return res.status(200).json({ 
+            message: 'Lấy thông tin thành công',
+            user: user 
+        });
+    }
+    catch(error){
+        console.error("Lỗi getMe:", error.message);
+        return res.status(404).json({ message: error.message });
+    }
+};
+
+export const updateProfile = async (req, res) =>{
+    try{
+        const userId = req.user.user_id;
+        const { full_name, phone } = req.body; 
+        if(!full_name || !phone){
+             return res.status(400).json({ message: "Vui lòng nhập họ tên và số điện thoại." });
+        }
+        const updatedUser = await AUTH_SERVICE.updateProfile(userId, { full_name, phone });
+        return res.status(200).json({
+            message: 'Cập nhật thành công',
+            user: updatedUser
+        });
+    }
+    catch(error){
+        console.error("Lỗi updateProfile:", error.message);
+        return res.status(500).json({ message: error.message });
+    }
+};

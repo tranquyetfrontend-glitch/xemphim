@@ -60,4 +60,27 @@ export class UserRepository{
         `;
         await pool.query(query, [userId, newPasswordHash]);
     }
+
+    async findById(userId){
+        const query = `
+        SELECT user_id, email, full_name, phone, role
+        FROM identity.users
+        WHERE user_id = $1
+        `;
+        const result = await pool.query(query, [userId]);
+        return result.rows?.[0];
+    }
+
+    async updateUserProfile(userId, { full_name, phone }){
+        const query = `
+        UPDATE identity.users
+        SET full_name = $1, 
+        phone = $2,
+        updated_at = NOW()
+        WHERE user_id = $3
+        RETURNING user_id, email, full_name, phone, role;
+        `;
+        const result = await pool.query(query, [full_name, phone, userId]);
+        return result.rows?.[0];
+    }
 }

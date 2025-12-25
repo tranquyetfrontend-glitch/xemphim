@@ -285,7 +285,7 @@ function checkLoginState(){
                 updateHeaderState(true, username);
             }
             else{
-                updateHeaderState(true, 'Khách'); 
+                updateHeaderState(true, 'Khách');
             }
         }
         catch(error){
@@ -339,7 +339,5 @@ document.addEventListener('DOMContentLoaded', () =>{
             loadAuthModals();
         }
     }
-    checkLoginState();
-    setupDropdownToggle();
     checkAutoOpenModal();
 });

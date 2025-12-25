@@ -127,4 +127,20 @@ export class AuthService{
         await USER_REPO.updateUserPassword(user.user_id, newPasswordHash);
         return {message: "Mật khẩu của bạn đã được đặt lại thành công."};
     }
+
+    async getMe(userId){
+        const user = await USER_REPO.findById(userId);
+        if(!user){
+            throw new Error('Người dùng không tồn tại.');
+        }
+        return user;
+    }
+
+    async updateProfile(userId, data){
+        const updatedUser = await USER_REPO.updateUserProfile(userId, data);
+        if(!updatedUser){
+            throw new Error('Lỗi khi cập nhật thông tin.');
+        }
+        return updatedUser;
+    }
 }

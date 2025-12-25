@@ -164,7 +164,9 @@ body{
 }
 
 .user-dropdown-menu.active{
-    display: block;
+    display: block !important;
+    opacity: 1;
+    visibility: visible;
 }
 
 .user-dropdown-menu .dropdown-item{
@@ -178,4 +180,9 @@ body{
 
 .user-dropdown-menu .dropdown-item:hover{
     background-color: #444; 
+}
+
+.user-dropdown-toggle:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
 }
