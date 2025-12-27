@@ -110,4 +110,38 @@ export class ShowtimeService{
             base_price: showtimeInfo.base_price 
         };
     }
+
+    async getScheduleByDate(date){
+        try {
+            const showtimes = await SHOWTIME_REPO.getRawScheduleByDate(date);
+            if (!showtimes || showtimes.length === 0) return [];
+            const movieIds = [...new Set(showtimes.map(s => s.movie_id))];
+            const movieResponse = await axios.get(`${CATALOG_SERVICE_URL}/api/movies`, {
+                params: { ids: movieIds.join(',') }
+            });
+            const moviesFromCatalog = movieResponse.data;
+            return moviesFromCatalog.map(movie =>{
+                return{
+                    movie_id: movie.movie_id,
+                    title: movie.title,
+                    poster_url: movie.poster_url,
+                    subtitle: movie.subtitle,
+                    age_rating: movie.age_rating || 'P',
+                    duration: movie.duration_minutes || 0,
+                    country: movie.country || 'Việt Nam',
+                    showtimes: showtimes
+                        .filter(s => s.movie_id === movie.movie_id)
+                        .map(s =>({
+                            showtime_id: s.showtime_id,
+                            time: dayjs(s.start_time).format('HH:mm'),
+                            format: s.format || '2D'
+                        }))
+                };
+            }).filter(m => m.showtimes.length > 0);
+        }
+        catch(error){
+            console.error("Lỗi tại ShowtimeService:", error.message);
+            throw error;
+        }
+    }
 }

@@ -325,6 +325,7 @@ function renderTimesByDate(phim, selectedDate){
 document.addEventListener("DOMContentLoaded", async function(){
     const urlParams = new URLSearchParams(window.location.search);
     const movieId = urlParams.get('id');
+    const showtimeIdFromUrl = urlParams.get('showtimeId');
     const container = document.getElementById("movie-detail-container");
     if(!movieId){
         container.innerHTML = "<h1 style='color:white; text-align:center;'>Lỗi: Không tìm thấy ID phim.</h1>";
@@ -364,8 +365,25 @@ document.addEventListener("DOMContentLoaded", async function(){
                 <p style="color:#ccc; text-align:center;">Vui lòng chọn ngày để xem suất chiếu.</p>
             </div>
         </div>`;
-        
         renderDateSelector(phim);
+        if (showtimeIdFromUrl && phim.showtimes){
+            console.log("Phát hiện showtimeId từ trang chủ, đang tìm dữ liệu...");
+            
+            let targetShowtime = null;
+            phim.showtimes.forEach(cinema =>{
+                const found = cinema.times.find(t => 
+                    (t.showtime_id == showtimeIdFromUrl) || 
+                    (t.showtimeId == showtimeIdFromUrl) || 
+                    (t.id == showtimeIdFromUrl)
+                );
+                if(found) targetShowtime = found;
+            });
+            if(targetShowtime){
+                targetShowtime.showtime_id = showtimeIdFromUrl;
+                renderSeatSelection(phim, targetShowtime);
+                document.querySelector('.showtime-section').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
     }
     catch(error){
         console.error("Lỗi detail:", error);

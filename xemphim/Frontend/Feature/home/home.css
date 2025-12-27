@@ -641,3 +641,164 @@ body {
         padding: 0 15px;
     }
 }
+
+/* Container cho các Tab ngày */
+#date-selector {
+    display: flex;
+    gap: 10px;
+    padding: 15px 0;
+    overflow-x: auto; /* Cuộn ngang nếu quá nhiều ngày */
+    border-bottom: 1px solid #333;
+    margin-bottom: 20px;
+}
+
+/* Từng Tab ngày */
+.date-tab {
+    padding: 10px 20px;
+    background-color: #222;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    white-space: nowrap;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.date-tab:hover {
+    background-color: #333;
+}
+
+/* Tab đang được chọn */
+.date-tab.active {
+    background-color: #e50914; /* Màu đỏ thương hiệu */
+    font-weight: bold;
+    border-color: #ff0000;
+}
+
+/* Khối hiển thị phim trong lịch chiếu */
+.schedule-movie-item {
+    display: flex;
+    gap: 20px;
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #333;
+}
+
+.movie-poster-wrapper {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.movie-poster-wrapper img {
+    width: 120px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.movie-format-badge {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    padding: 2px 6px;
+    font-size: 11px;
+    border-radius: 3px;
+    border: 1px solid #555;
+}
+
+.movie-details-wrapper {
+    flex-grow: 1;
+}
+
+.movie-title{
+    margin: 0 0 10px 0;
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+.movie-title a{
+    text-decoration: none;
+    color: inherit;
+}
+
+.age-label{
+    background: #ffc107;
+    color: #000;
+    padding: 2px 5px;
+    font-size: 12px;
+    border-radius: 3px;
+    margin-left: 10px;
+}
+
+.movie-meta{
+    font-size: 13px;
+    color: #aaa;
+    margin-bottom: 15px;
+}
+
+.showtime-section {
+    border-top: 1px dashed #444;
+    padding-top: 15px;
+}
+
+.section-label{
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #ddd;
+    font-size: 14px;
+}
+
+.showtime-grid{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.time-slot-btn{
+    display: inline-block;
+    padding: 8px 15px;
+    background: #333;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 500;
+    border: 1px solid #444;
+    transition: all 0.2s;
+}
+
+.time-slot-btn:hover{
+    background: #e50914;
+    border-color: #e50914;
+    transform: translateY(-2px);
+}
+
+.cinema-location-group {
+    margin-bottom: 15px;
+    border-bottom: 1px solid #2a2a2a;
+    padding-bottom: 10px;
+}
+
+.cinema-location-group:last-child {
+    border-bottom: none;
+}
+
+.cinema-name-label {
+    font-size: 13px;
+    color: #ffc107; /* Màu vàng để nổi bật tên rạp */
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.showtime-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}

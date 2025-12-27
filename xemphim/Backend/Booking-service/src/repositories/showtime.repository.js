@@ -99,4 +99,19 @@ export class ShowtimeRepository{
         const query = `DELETE FROM showtimes WHERE start_time > NOW()`;
         return await pool.query(query);
     }
+
+    async getRawScheduleByDate(date){
+        const query = `
+        SELECT 
+        s.showtime_id, 
+        s.movie_id, 
+        s.start_time,
+        s.format
+        FROM booking.showtimes s
+        WHERE DATE(s.start_time) = $1
+        ORDER BY s.start_time;
+        `;
+        const result = await pool.query(query, [date]); 
+        return result.rows;
+    }
 }

@@ -30,4 +30,18 @@ export class ShowtimeController{
             return res.status(500).json({error: 'Lỗi khi lấy sơ đồ ghế: ' + error.message});
         }
     }
+
+    async getScheduleByDate(req, res){
+        try{
+            const { date } = req.query;
+            if (!date){
+                return res.status(400).json({ error: 'Thiếu thông tin ngày (date).' });
+            }
+            const schedule = await SHOWTIME_SERVICE.getScheduleByDate(date);
+            return res.status(200).json(schedule);
+        }
+        catch(error){
+            return res.status(500).json({ error: 'Lỗi server: ' + error.message });
+        }
+    }
 }

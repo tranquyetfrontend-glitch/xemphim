@@ -5,6 +5,10 @@ const router = express.Router();
 const SHOWTIME_CONTROLLER = new ShowtimeController();
 
 router.get(
+    '/schedule',
+     SHOWTIME_CONTROLLER.getScheduleByDate.bind(SHOWTIME_CONTROLLER)
+    );
+router.get(
     '/grouped-by-movie/:movieId',
     SHOWTIME_CONTROLLER.getGroupedShowtimesByMovieId.bind(SHOWTIME_CONTROLLER) 
 );

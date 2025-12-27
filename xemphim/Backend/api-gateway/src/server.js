@@ -55,6 +55,11 @@ app.use('/api/seats', createProxyMiddleware({
     changeOrigin: true,
     pathRewrite: createPathRewriter('/api/seats')
 }));
+app.use('/api/showtimes', createProxyMiddleware({
+    target: BOOKING_SERVICE_URL,
+    changeOrigin: true,
+    pathRewrite: { '^/api/showtimes': '/api/showtimes' } 
+}));
 
 //Payment Service (Callback)
 app.use('/api/payments', createProxyMiddleware({ 
