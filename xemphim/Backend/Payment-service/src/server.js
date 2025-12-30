@@ -7,7 +7,19 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3004;
 
-app.use(cors());
+const corsOptions = {
+    origin: [
+        'http://127.0.0.1:5500',
+        'http://localhost:5500',
+        'https://xemphim-bc3o.vercel.app',
+        /^https:\/\/xemphim-bc3o-.*\.vercel\.app$/
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/api/payments', paymentRouter);
 app.listen(PORT, () => {

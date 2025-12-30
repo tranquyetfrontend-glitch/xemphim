@@ -1,4 +1,5 @@
-const GATEWAY_URL = 'http://127.0.0.1:8080/api';
+// Sử dụng API_CONFIG từ config.js (phải load config.js trước)
+const GATEWAY_URL = window.API_CONFIG?.GATEWAY_URL || 'http://127.0.0.1:8080/api';
 const API_MOVIE_URL = `${GATEWAY_URL}/catalog/movies`;
 const API_SHOWTIME_URL = `${GATEWAY_URL}/bookings/showtimes/schedule`;
 
@@ -332,7 +333,8 @@ document.addEventListener("DOMContentLoaded", async function(){
         return;
     }
     try{
-        const response = await fetch(`http://127.0.0.1:3002/api/movies/${movieId}`);
+        const catalogUrl = GATEWAY_URL.replace('/api', '/api/catalog');
+        const response = await fetch(`${catalogUrl}/movies/${movieId}`);
         if(!response.ok) throw new Error('Không thể tải thông tin phim.');
         const phim = await response.json();
         const bgContainer = document.querySelector('.detail-background');

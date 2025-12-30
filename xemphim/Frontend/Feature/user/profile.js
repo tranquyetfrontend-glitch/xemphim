@@ -1,4 +1,5 @@
-const API_AUTH_URL = 'http://127.0.0.1:3001/api/auth';
+// Sử dụng API_CONFIG từ config.js (phải load config.js trước)
+const API_AUTH_URL = window.API_CONFIG?.AUTH_URL || 'http://127.0.0.1:3001/api/auth';
 
 function generateUsername(lastName, firstName){
     const fullName = `${lastName}${firstName}`;

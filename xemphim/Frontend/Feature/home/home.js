@@ -1,4 +1,5 @@
-const GATEWAY_URL = 'http://127.0.0.1:8080/api';
+// Sử dụng API_CONFIG từ config.js (phải load config.js trước)
+const GATEWAY_URL = window.API_CONFIG?.GATEWAY_URL || 'http://127.0.0.1:8080/api';
 const API_MOVIE_URL = `${GATEWAY_URL}/catalog/movies`;
 const API_SHOWTIME_URL = `${GATEWAY_URL}/bookings/showtimes/schedule`;
 

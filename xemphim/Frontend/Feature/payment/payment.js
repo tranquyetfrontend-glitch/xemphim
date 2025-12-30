@@ -62,7 +62,8 @@ document.addEventListener('DOMContentLoaded', () =>{
                 confirmPaymentBtn.disabled = true;
                 confirmPaymentBtn.textContent = "Đang kết nối MOMO ...";
                 try{
-                    const response = await fetch('http://localhost:8080/api/payments/create', {
+                    const paymentUrl = window.API_CONFIG?.GATEWAY_URL?.replace('/api', '/api/payments/create') || 'http://localhost:8080/api/payments/create';
+                    const response = await fetch(paymentUrl, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

@@ -8,7 +8,19 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+const corsOptions = {
+    origin: [
+        'http://127.0.0.1:5500',                    // Local development
+        'http://localhost:5500',                    // Local development (alternative)
+        'https://xemphim-bc3o.vercel.app',          // Vercel production domain
+        /^https:\/\/xemphim-bc3o-.*\.vercel\.app$/ // Vercel preview deployments (regex)
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 
 const{
     AUTH_SERVICE_URL,

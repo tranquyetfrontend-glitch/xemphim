@@ -13,7 +13,12 @@ const app = express();
 const PORT = process.env.PORT || 3003;
 
 const corsOptions={
-    origin: 'http://127.0.0.1:5500', 
+    origin: [
+        'http://127.0.0.1:5500',
+        'http://localhost:5500',
+        'https://xemphim-bc3o.vercel.app',
+        /^https:\/\/xemphim-bc3o-.*\.vercel\.app$/
+    ], 
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     optionsSuccessStatus: 204,

@@ -1,5 +1,6 @@
 const AUTH_MODALS_CONTAINER = document.getElementById('auth-modals-container');
-const API_BASE_URL = 'http://127.0.0.1:3001/api/auth';
+// Sử dụng API_CONFIG từ config.js (phải load config.js trước)
+const API_BASE_URL = window.API_CONFIG?.AUTH_URL || 'http://127.0.0.1:3001/api/auth';
 
 async function loadAuthModals(){
     try {
@@ -246,7 +247,8 @@ async function handleResetPassword(e){
     messageElement.textContent = 'Đang xử lý...';
     messageElement.style.color = 'yellow';
     try{
-        const response= await fetch(`http://127.0.0.1:3001/api/auth/reset-password?token=${token}`,{
+        const resetUrl = `${API_BASE_URL}/reset-password?token=${token}`;
+        const response= await fetch(resetUrl,{
             method: 'POST',
             headers:{
                 'Content-Type': 'application/json',
