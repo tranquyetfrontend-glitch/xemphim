@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/Frontend/Feature/home/index.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/Frontend/Feature/$1"
+    }
+  ]
+}
+
