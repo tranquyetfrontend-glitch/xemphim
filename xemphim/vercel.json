@@ -3,11 +3,39 @@
   "rewrites": [
     {
       "source": "/",
-      "destination": "/Frontend/Feature/home/index.html"
+      "destination": "/home/index.html"
     },
     {
-      "source": "/(.*)",
-      "destination": "/Frontend/Feature/$1"
+      "source": "/home",
+      "destination": "/home/index.html"
+    },
+    {
+      "source": "/home/(.*)",
+      "destination": "/home/$1"
+    },
+    {
+      "source": "/auth/(.*)",
+      "destination": "/auth/$1"
+    },
+    {
+      "source": "/detail/(.*)",
+      "destination": "/detail/$1"
+    },
+    {
+      "source": "/payment/(.*)",
+      "destination": "/payment/$1"
+    },
+    {
+      "source": "/user/(.*)",
+      "destination": "/user/$1"
+    },
+    {
+      "source": "/common/(.*)",
+      "destination": "/common/$1"
+    },
+    {
+      "source": "/Share/(.*)",
+      "destination": "/../Share/$1"
     }
   ]
 }
