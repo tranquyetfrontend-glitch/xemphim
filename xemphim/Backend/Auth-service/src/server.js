@@ -31,6 +31,29 @@ app.use((err, req, res, next)=>{
     }
     next(err);
 });
+
+// Health check route
+app.get('/', (req, res) => {
+    res.json({ 
+        service: 'Auth Service',
+        status: 'running',
+        port: PORT,
+        endpoints: {
+            register: 'POST /api/auth/register',
+            login: 'POST /api/auth/login',
+            refreshToken: 'POST /api/auth/token/refresh',
+            forgotPassword: 'POST /api/auth/forgot-password',
+            resetPassword: 'POST /api/auth/reset-password',
+            getMe: 'GET /api/auth/me',
+            updateProfile: 'PUT /api/auth/update-profile'
+        }
+    });
+});
+
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok', service: 'Auth Service' });
+});
+
 app.use('/api/auth', authRouter);
 app.listen(PORT, ()=>{
     console.log(`Auth Service đang chạy trên cổng: ${PORT}`);
