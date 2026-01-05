@@ -341,7 +341,9 @@ document.addEventListener("DOMContentLoaded", async function(){
         
         // Lấy lịch chiếu từ Booking Service
         try {
-            const showtimeResponse = await fetch(`${GATEWAY_URL}/showtimes/grouped-by-movie/${movieId}`);
+            // Gọi trực tiếp Booking Service trên Render (tránh lỗi 404 qua API Gateway)
+            const bookingBaseUrl = 'https://xemphim-booking-service.onrender.com';
+            const showtimeResponse = await fetch(`${bookingBaseUrl}/api/showtimes/grouped-by-movie/${movieId}`);
             if(showtimeResponse.ok) {
                 const groupedShowtimes = await showtimeResponse.json();
                 console.log('Showtimes data from API:', groupedShowtimes);
