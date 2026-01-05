@@ -333,10 +333,39 @@ document.addEventListener("DOMContentLoaded", async function(){
         return;
     }
     try{
+        // Lấy thông tin phim từ Catalog Service
         const catalogUrl = GATEWAY_URL.replace('/api', '/api/catalog');
-        const response = await fetch(`${catalogUrl}/movies/${movieId}`);
-        if(!response.ok) throw new Error('Không thể tải thông tin phim.');
-        const phim = await response.json();
+        const movieResponse = await fetch(`${catalogUrl}/movies/${movieId}`);
+        if(!movieResponse.ok) throw new Error('Không thể tải thông tin phim.');
+        const phim = await movieResponse.json();
+        
+        // Lấy lịch chiếu từ Booking Service
+        try {
+            const showtimeResponse = await fetch(`${GATEWAY_URL}/showtimes/grouped-by-movie/${movieId}`);
+            if(showtimeResponse.ok) {
+                const groupedShowtimes = await showtimeResponse.json();
+                console.log('Showtimes data from API:', groupedShowtimes);
+                // Transform dữ liệu showtimes để phù hợp với format mong đợi
+                phim.showtimes = groupedShowtimes.map(group => ({
+                    cinemaName: group.cinemaName || group.cinema_name || "Rạp Hệ Thống",
+                    address: group.address || "",
+                    times: (group.times || []).map(st => ({
+                        showtime_id: st.showtimeId || st.showtime_id || st.id,
+                        time: st.time || st.start_time,
+                        format: st.screenType || st.format || "2D",
+                        price: st.price || st.base_price
+                    }))
+                }));
+                console.log('Transformed showtimes:', phim.showtimes);
+            } else {
+                console.warn('Không thể tải lịch chiếu:', showtimeResponse.status);
+                phim.showtimes = [];
+            }
+        } catch(showtimeError) {
+            console.error('Lỗi khi lấy lịch chiếu:', showtimeError);
+            phim.showtimes = [];
+        }
+        
         const bgContainer = document.querySelector('.detail-background');
         if(bgContainer){
             bgContainer.style.setProperty('--detail-bg-image', `url(${phim.poster_url})`);
