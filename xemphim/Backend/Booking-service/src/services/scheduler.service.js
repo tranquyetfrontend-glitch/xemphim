@@ -12,6 +12,11 @@ const CATALOG_SERVICE_URL = process.env.CATALOG_SERVICE_URL
     ? `${process.env.CATALOG_SERVICE_URL}/api/movies`
     : 'http://localhost:3002/api/movies';
 
+// Log để debug
+console.log('SchedulerService Config:');
+console.log('  - CATALOG_SERVICE_URL env:', process.env.CATALOG_SERVICE_URL || 'NOT SET');
+console.log('  - Final CATALOG_SERVICE_URL:', CATALOG_SERVICE_URL);
+
 const SHOWTIME_CONFIG =[
     { time: '10:00', format: '2D', price: 90000 },
     { time: '13:30', format: '3D', price: 120000 },
@@ -29,8 +34,12 @@ export class SchedulerService{
 
     async generateShowtimes(daysAhead = 7){
         console.log(`BẮT ĐẦU TẠO LỊCH CHIẾU (${daysAhead} ngày)`);
+        console.log(`Đang gọi Catalog Service: ${CATALOG_SERVICE_URL}`);
         try{
-            const response = await axios.get(`${CATALOG_SERVICE_URL}/`);
+            const response = await axios.get(`${CATALOG_SERVICE_URL}/`, {
+                timeout: 10000 // 10 seconds timeout
+            });
+            console.log(`Catalog Service response status: ${response.status}`);
             const movies = response.data; 
             const rooms = await this.getAllRooms();
             console.log(`Kiểm tra: Phim: ${movies.length} | Phòng: ${rooms.length}`);
@@ -84,6 +93,13 @@ export class SchedulerService{
         }
         catch (error){
             console.error("Lỗi hệ thống khi tạo lịch:", error.message);
+            console.error("Error details:", {
+                message: error.message,
+                code: error.code,
+                response: error.response?.data,
+                status: error.response?.status,
+                catalogUrl: CATALOG_SERVICE_URL
+            });
             throw new Error(`Không thể kết nối Catalog Service hoặc Database: ${error.message}`);
         }
     }
