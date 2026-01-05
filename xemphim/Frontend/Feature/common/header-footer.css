@@ -9,6 +9,15 @@ body{
     font-family: sans-serif;
 }
 
+/* Loại bỏ underline cho tất cả links */
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
 
 .main-header{
     background-color: #000; 
