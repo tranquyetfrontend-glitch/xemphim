@@ -1,10 +1,16 @@
 import axios from 'axios';
+import * as dotenv from 'dotenv';
 import { ShowtimeRepository } from '../repositories/showtime.repository.js';
+
+dotenv.config();
 
 const SHOWTIME_REPO = new ShowtimeRepository();
 const TURNAROUND_MINUTES = 20;
 
-const CATALOG_SERVICE_URL = 'http://localhost:3002/api/movies';
+// Sử dụng environment variable, fallback về localhost nếu không có
+const CATALOG_SERVICE_URL = process.env.CATALOG_SERVICE_URL 
+    ? `${process.env.CATALOG_SERVICE_URL}/api/movies`
+    : 'http://localhost:3002/api/movies';
 
 const SHOWTIME_CONFIG =[
     { time: '10:00', format: '2D', price: 90000 },
