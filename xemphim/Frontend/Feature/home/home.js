@@ -47,16 +47,18 @@ function createShowtimeBlock(movieData, selectedDate){
     const now = new Date();
     const todayStr = now.toISOString().split('T')[0];
     const groupedByCinema = {};
-    movieData.showtimes.forEach(slot =>{
+
+    (movieData.showtimes || []).forEach(slot =>{
         let showTime;
-        if(slot.time.includes('-') || slot.time.includes('T')){
+        if(slot.time && (slot.time.includes('-') || slot.time.includes('T'))){
             showTime = new Date(slot.time);
         }
-        else{
+        else if(slot.time){
             showTime = new Date(`${selectedDate}T${slot.time}:00`);
         }
-        if(isNaN(showTime.getTime())) return;
+        if(!showTime || isNaN(showTime.getTime())) return;
         if(selectedDate === todayStr && showTime <= now) return;
+
         const cName = slot.cinema_name || slot.cinemaName || "Rạp Hệ Thống";
         const cAddress = slot.address ? ` - ${slot.address}` : "";
         const cinemaKey = `${cName}${cAddress}`;
@@ -72,21 +74,21 @@ function createShowtimeBlock(movieData, selectedDate){
             })
         });
     });
-    let showtimesHtml = "";
+
     const cinemaKeys = Object.keys(groupedByCinema);
+    let showtimesHtml = "";
     if(cinemaKeys.length > 0){
         cinemaKeys.forEach(key =>{
             groupedByCinema[key].sort((a, b) => a.timeLabel.localeCompare(b.timeLabel));
             showtimesHtml += `
-            <div class="cinema-item-block" style="margin-bottom: 20px;">
-                <p style="color: #ffc107; font-weight: bold; font-size: 14px; margin: 15px 0 10px 0; border-left: 3px solid #ffc107; padding-left: 8px;">
+            <div class="cinema-item-block">
+                <p class="cinema-name-label">
                     ${key}
                 </p>
-                <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                <div class="showtime-grid">
                     ${groupedByCinema[key].map(slot => `
                         <a href="../detail/chi-tiet-phim.html?id=${movieData.movie_id}&showtimeId=${slot.id}" 
-                            class="time-slot-btn" 
-                            style="background: #2a2a2a; color: white; border: 1px solid #444; padding: 8px 15px; border-radius: 4px; text-decoration: none; font-size: 14px; min-width: 60px; text-align: center;">
+                            class="time-slot-btn">
                             ${slot.timeLabel}
                         </a>
                     `).join('')}
@@ -96,19 +98,20 @@ function createShowtimeBlock(movieData, selectedDate){
         });
     }
     else{
-        showtimesHtml = `<p style="color: #999; font-size: 13px; margin-top: 15px;">Hết suất chiếu cho ngày này.</p>`;
+        showtimesHtml = `<p class="no-showtime-text">Hết suất chiếu cho ngày này.</p>`;
     }
+
     return `
-    <div class="schedule-movie-item" style="display: flex; gap: 20px; background: #111; padding: 20px; border-radius: 12px; margin-bottom: 30px; border: 1px solid #222; align-items: flex-start;">
-        <div class="movie-poster" style="flex: 0 0 140px;">
-            <img src="${movieData.poster_url}" alt="${movieData.title}" style="width: 100%; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);" onerror="this.src='https://via.placeholder.com/150x220'">
+    <div class="schedule-movie-item">
+        <div class="schedule-poster">
+            <img src="${movieData.poster_url}" alt="${movieData.title}" onerror="this.src='https://via.placeholder.com/150x220'">
         </div>
-        <div class="movie-content" style="flex: 1;">
-            <h4 style="margin: 0 0 5px 0; color: white; font-size: 20px; font-weight: bold;">
-                ${movieData.title.toUpperCase()} 
-                <span style="background: #ffc107; color: black; padding: 2px 8px; border-radius: 4px; font-size: 13px; margin-left: 10px; vertical-align: middle;">${movieData.age_rating || 'P'}</span>
-            </h4>
-            <p style="color: #aaa; font-size: 13px; margin-bottom: 10px;">Thời lượng: 100 phút | Việt Nam</p>
+        <div class="schedule-content">
+            <div class="schedule-title-row">
+                <h4 class="schedule-title">${movieData.title}</h4>
+                <span class="age-badge">${movieData.age_rating || 'P'}</span>
+            </div>
+            <p class="schedule-meta">Thời lượng: ${movieData.duration || 100} phút | ${movieData.country || 'Việt Nam'}</p>
             <div class="all-cinemas-wrapper">
                 ${showtimesHtml}
             </div>

@@ -9,6 +9,7 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     gap: 40px;
+    box-sizing: border-box;
 }
 
 .detail-poster{
@@ -28,14 +29,15 @@ body {
 }
 
 .detail-info h1{
-    font-size: 2.5em;
+    font-size: 2.3em;
     margin-top: 0;
     color: white;
+    line-height: 1.2;
 }
 
 .detail-info p{
-    font-size: 1.1em;
-    line-height: 1.6;
+    font-size: 1.05em;
+    line-height: 1.65;
     margin: 8px 0;
 }
 
@@ -91,7 +93,43 @@ body {
 
     .detail-poster{
         flex: none;
-        width: 60%;
+        width: 65%;
+        max-width: 320px;
+    }
+
+    .detail-info h1{
+        font-size: 2em;
+        text-align: center;
+    }
+
+    .detail-info p{
+        font-size: 1em;
+        text-align: center;
+    }
+}
+
+@media(max-width: 640px){
+    .detail-layout{
+        padding: 16px;
+        gap: 20px;
+    }
+
+    .detail-poster{
+        width: 70%;
+    }
+
+    .detail-info{
+        width: 100%;
+    }
+
+    .detail-info h1{
+        font-size: 1.6em;
+    }
+
+    .detail-info p{
+        font-size: 0.95em;
+        line-height: 1.6;
+        text-align: left;
     }
 }
 
