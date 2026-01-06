@@ -5,15 +5,18 @@ body {
 
 .detail-layout{
     display: flex;
-    padding: 40px;
-    max-width: 1200px;
+    padding: 32px;
+    max-width: 1100px;
+    width: 100%;
     margin: 0 auto;
-    gap: 40px;
+    gap: 32px;
     box-sizing: border-box;
 }
 
 .detail-poster{
-    flex: 0 0 300px;
+    flex: 0 0 280px;
+    max-width: 320px;
+    width: 100%;
 }
 
 .detail-poster img{
@@ -26,17 +29,19 @@ body {
 .detail-info{
     flex-grow: 1;
     color: #f0f0f0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .detail-info h1{
-    font-size: 2.3em;
+    font-size: 2.2em;
     margin-top: 0;
     color: white;
-    line-height: 1.2;
+    line-height: 1.25;
 }
 
 .detail-info p{
-    font-size: 1.05em;
+    font-size: 1.02em;
     line-height: 1.65;
     margin: 8px 0;
 }
@@ -89,33 +94,35 @@ body {
         flex-direction: column;
         padding: 20px;
         align-items: center;
+        gap: 20px;
     }
 
     .detail-poster{
         flex: none;
-        width: 65%;
-        max-width: 320px;
+        width: 70%;
+        max-width: 300px;
     }
 
     .detail-info h1{
-        font-size: 2em;
-        text-align: center;
+        font-size: 1.8em;
+        text-align: left;
     }
 
     .detail-info p{
-        font-size: 1em;
-        text-align: center;
+        font-size: 0.98em;
+        text-align: left;
     }
 }
 
 @media(max-width: 640px){
     .detail-layout{
-        padding: 16px;
-        gap: 20px;
+        padding: 14px;
+        gap: 18px;
     }
 
     .detail-poster{
-        width: 70%;
+        width: 75%;
+        max-width: 280px;
     }
 
     .detail-info{
@@ -123,11 +130,11 @@ body {
     }
 
     .detail-info h1{
-        font-size: 1.6em;
+        font-size: 1.5em;
     }
 
     .detail-info p{
-        font-size: 0.95em;
+        font-size: 0.94em;
         line-height: 1.6;
         text-align: left;
     }
@@ -161,6 +168,11 @@ body {
     position: relative;
     z-index: 1;
     background-color: transparent !important;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 12px;
+    box-sizing: border-box;
 }
 
 .showtime-section{
@@ -326,9 +338,10 @@ body {
     width: 100%;
     max-width: 900px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 18px 14px;
     background-color: #111;
     border-radius: 8px;
+    box-sizing: border-box;
 }
 
 .showtime-header{
@@ -382,6 +395,7 @@ body {
     justify-content: center;
     margin: 30px 0;
     overflow-x: auto;
+    padding: 0 6px;
 }
 
 #seat-map-grid{
@@ -492,6 +506,28 @@ body {
     height: 15px;
     border-radius: 3px;
     margin-right: 8px;
+}
+
+@media (max-width: 600px){
+    .seat-selection-content{
+        padding: 14px 10px;
+    }
+    .seat{
+        width: 26px;
+        height: 22px;
+        font-size: 10px;
+        line-height: 22px;
+    }
+    .row-label{
+        width: 22px;
+        margin-right: 8px;
+    }
+    .seat-row{
+        gap: 6px;
+    }
+    .screen-line{
+        max-width: 420px;
+    }
 }
 
 .payment-summary{
