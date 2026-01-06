@@ -119,34 +119,33 @@ function createShowtimeBlock(movieData, selectedDate){
 
 document.addEventListener("DOMContentLoaded", async function(){
     const thungChuaPhim = document.getElementById("danhSachPhimHan");
-    const thungChuaXepHang = document.getElementById("danhSachXepHang");
-    if(thungChuaPhim && thungChuaXepHang) {
+    if(thungChuaPhim) {
         try{
             const response = await fetch(API_MOVIE_URL);
             if(!response.ok) throw new Error('Không thể tải danh sách phim từ API.');
             const movies = await response.json();
             if(movies.length === 0){
                 thungChuaPhim.innerHTML = "<p>Chưa có phim nào đang chiếu.</p>";
-                thungChuaXepHang.innerHTML = "<p>Chưa có phim xếp hạng.</p>";
             }
             else{
                 const moviesForGrid = movies; 
                 let allMoviesHTML = moviesForGrid.map(createMovieItemHTML).join('');
                 thungChuaPhim.innerHTML = allMoviesHTML;
-                const rankedMovies = movies.slice(0, 7); 
-                let allRankingsHTML = rankedMovies.map(createRankingItemHTML).join('');
-                thungChuaXepHang.innerHTML = allRankingsHTML;
             }
         }
         catch(error){
             console.error("Lỗi tải phim:", error);
             thungChuaPhim.innerHTML = "<p style='color:red;'>Lỗi kết nối Server Catalog.</p>";
-            thungChuaXepHang.innerHTML = "<p style='color:red;'>Lỗi kết nối Server Catalog.</p>";
         }
     }
-    const today = new Date().toISOString().split('T')[0];
-    await renderSchedule(today);
-    renderDateTabs();
+    
+    // Chỉ load schedule nếu có container
+    const scheduleContainer = document.getElementById('showtime-list-container');
+    if(scheduleContainer) {
+        const today = new Date().toISOString().split('T')[0];
+        await renderSchedule(today);
+        renderDateTabs();
+    }
 });
 
 async function renderSchedule(date){

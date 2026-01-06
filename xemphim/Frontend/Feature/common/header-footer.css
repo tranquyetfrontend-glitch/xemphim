@@ -295,31 +295,72 @@ body.menu-open {
 
 
 .main-footer{
-    background-color: #000;
-    padding: 30px 20px;
-    text-align: center;
-    border-top: 1px solid #333;
+    background-color: #0a0a0a;
+    padding: 40px 20px 30px;
+    border-top: 1px solid #222;
     margin-top: auto;
 }
 
+.footer-content-wrapper {
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.footer-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px 20px;
+    margin-bottom: 30px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #222;
+}
+
 .footer-nav a{
-    color: #fff;
+    color: #ccc;
     text-decoration: none;
-    padding: 0 10px;
-    font-size: 13px;
-    opacity: 0.7;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+    white-space: nowrap;
+}
+
+.footer-nav a:hover{
+    color: #e50914;
 }
 
 .footer-social-apps{
-    margin: 20px 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 30px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #222;
+}
+
+.footer-social-apps .social-link,
+.footer-social-apps .app-link {
+    display: inline-flex;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.footer-social-apps .social-link:hover,
+.footer-social-apps .app-link:hover {
+    transform: scale(1.1);
 }
 
 .footer-social-apps img{
     height: 35px; 
-    margin: 0 5px;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.footer-social-apps .bct-logo {
+    height: 45px;
+    margin-left: 10px;
 }
 
 .bct-logo{
@@ -327,15 +368,103 @@ body.menu-open {
     width: auto;
 }
 
+.footer-contact-info {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
 .footer-contact-info p{
     font-size: 12px;
-    margin: 4px 0;
-    color: #aaa;
+    margin: 8px 0;
+    color: #888;
+    line-height: 1.6;
+}
+
+.footer-contact-info p strong {
+    color: #ccc;
+    font-weight: 600;
 }
 
 .copyright{
     margin-top: 20px !important;
     font-size: 11px !important;
+    color: #666 !important;
+}
+
+@media (max-width: 768px) {
+    .main-footer {
+        padding: 30px 15px 20px;
+    }
+    
+    .footer-nav {
+        gap: 12px 15px;
+        margin-bottom: 25px;
+        padding-bottom: 20px;
+    }
+    
+    .footer-nav a {
+        font-size: 13px;
+    }
+    
+    .footer-social-apps {
+        gap: 8px;
+        margin-bottom: 25px;
+        padding-bottom: 20px;
+    }
+    
+    .footer-social-apps img {
+        height: 32px;
+    }
+    
+    .footer-social-apps .bct-logo {
+        height: 40px;
+        margin-left: 8px;
+    }
+    
+    .footer-contact-info p {
+        font-size: 11px;
+        margin: 6px 0;
+    }
+    
+    .copyright {
+        margin-top: 15px !important;
+        font-size: 10px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-footer {
+        padding: 25px 12px 15px;
+    }
+    
+    .footer-nav {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .footer-nav a {
+        font-size: 12px;
+    }
+    
+    .footer-social-apps {
+        gap: 6px;
+    }
+    
+    .footer-social-apps img {
+        height: 28px;
+    }
+    
+    .footer-social-apps .bct-logo {
+        height: 35px;
+        margin-left: 5px;
+    }
+    
+    .footer-contact-info p {
+        font-size: 10px;
+        margin: 5px 0;
+    }
 }
 
 .user-info{
