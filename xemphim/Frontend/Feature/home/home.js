@@ -75,29 +75,29 @@ function createShowtimeBlock(movieData, selectedDate){
         });
     });
 
-    const cinemaKeys = Object.keys(groupedByCinema);
     let showtimesHtml = "";
-    if(cinemaKeys.length > 0){
-        cinemaKeys.forEach(key =>{
-            groupedByCinema[key].sort((a, b) => a.timeLabel.localeCompare(b.timeLabel));
-            showtimesHtml += `
-            <div class="cinema-item-block">
-                <p class="cinema-name-label">
-                    ${key}
-                </p>
-                <div class="showtime-grid">
-                    ${groupedByCinema[key].map(slot => `
-                        <a href="../detail/chi-tiet-phim.html?id=${movieData.movie_id}&showtimeId=${slot.id}" 
-                            class="time-slot-btn">
-                            ${slot.timeLabel}
-                        </a>
-                    `).join('')}
-                </div>
+    const cinemaKeys = Object.keys(groupedByCinema);
+
+    if (cinemaKeys.length > 0) {
+        const firstCinemaKey = cinemaKeys[0];
+        groupedByCinema[firstCinemaKey].sort((a, b) => a.timeLabel.localeCompare(b.timeLabel));
+
+        showtimesHtml += `
+        <div class="cinema-item-block">
+            <p class="cinema-name-label">
+                ${firstCinemaKey}
+            </p>
+            <div class="showtime-grid">
+                ${groupedByCinema[firstCinemaKey].map(slot => `
+                    <a href="../detail/chi-tiet-phim.html?id=${movieData.movie_id}&showtimeId=${slot.id}" 
+                        class="time-slot-btn">
+                        ${slot.timeLabel}
+                    </a>
+                `).join('')}
             </div>
-            `;
-        });
-    }
-    else{
+        </div>
+        `;
+    } else {
         showtimesHtml = `<p class="no-showtime-text">Hết suất chiếu cho ngày này.</p>`;
     }
 
