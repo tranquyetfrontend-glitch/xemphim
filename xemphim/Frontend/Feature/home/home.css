@@ -1205,15 +1205,63 @@ body {
     }
 }
 
-@media (max-width: 480px) {
-    .time-slot-btn {
-        padding: 9px 14px;
-        font-size: 13px;
-        min-width: 65px;
-        max-width: calc(50% - 4px);
+@media (max-width: 480px){
+    .page{
+        padding: 0 12px;
     }
-    
-    .cinema-name-label {
-        font-size: 11px;
+
+    .date-tabs{
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 8px;
+        margin: 0 -12px;
+        padding: 0 12px 8px;
+    }
+
+    .date-tab{
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 100px;
+        height: 40px;
+        padding: 0 12px;
+        margin-right: 8px;
+        border-radius: 10px;
+        font-size: 14px;
+    }
+
+    .movies-list{
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .movie-card{
+        max-width: 360px;
+        margin: 0 auto;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #181818;
+    }
+
+    .movie-poster{
+        width: 100%;
+        aspect-ratio: 2/3;
+        object-fit: cover;
+    }
+
+    .movie-info{
+        padding: 12px;
+    }
+
+    .movie-title{
+        font-size: 16px;
+        margin-bottom: 4px;
+    }
+
+    .movie-meta{
+    font-size: 13px;
+    color: #b5b5b5;
     }
 }
