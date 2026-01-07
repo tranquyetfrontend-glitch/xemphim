@@ -1,4 +1,3 @@
-// Sử dụng API_CONFIG từ config.js (phải load config.js trước)
 const GATEWAY_URL = window.API_CONFIG?.GATEWAY_URL || 'http://127.0.0.1:8080/api';
 const API_MOVIE_URL = `${GATEWAY_URL}/catalog/movies`;
 const API_SHOWTIME_URL = `${GATEWAY_URL}/bookings/showtimes/schedule`;
@@ -141,8 +140,7 @@ document.addEventListener("DOMContentLoaded", async function(){
             thungChuaPhim.innerHTML = "<p style='color:red;'>Lỗi kết nối Server Catalog.</p>";
         }
     }
-    
-    // Chỉ load schedule nếu có container
+
     const scheduleContainer = document.getElementById('showtime-list-container');
     if(scheduleContainer) {
         const today = new Date().toISOString().split('T')[0];
@@ -181,12 +179,12 @@ function renderDateTabs(){
     selector.innerHTML = '';
     const daysOfWeek = ['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
 
-    for(let i = 0; i < 7; i++){
+    for(let i = 0; i < 3; i++){
         const d = new Date();
         d.setDate(d.getDate() + i);
         
         const dateString = d.toISOString().split('T')[0];
-        const dayLabel = i === 0 ? "Hôm nay" : daysOfWeek[d.getDay()];
+        const dayLabel = daysOfWeek[d.getDay()];
         const displayDate = `${d.getDate()}/${d.getMonth() + 1}`;
 
         const tab = document.createElement('div');
@@ -201,6 +199,6 @@ function renderDateTabs(){
         });
 
         selector.appendChild(tab);
-        if(i === 0) renderSchedule(dateString); // Tải lịch chiếu ngày đầu tiên mặc định
+        if(i === 0) renderSchedule(dateString);
     }
 }
