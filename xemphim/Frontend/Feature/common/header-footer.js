@@ -99,4 +99,93 @@ function initUserHeader(){
             }
         });
     }
+    initHeaderColorOnScroll();
+}
+
+function initHeaderColorOnScroll() {
+    const header = document.querySelector('.main-header');
+    if(!header) return;
+    const movieItems = document.querySelectorAll('.movie-item img');
+    if(movieItems.length === 0) return;
+    function getImageColor(img){
+        return new Promise((resolve) => {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 50;
+            canvas.height = 50;
+            img.crossOrigin = 'anonymous';
+            ctx.drawImage(img, 0, 0, 50, 50);
+            try{
+                const imageData = ctx.getImageData(0, 0, 50, 50);
+                const data = imageData.data;
+                let r = 0, g = 0, b = 0, count = 0;
+                for(let i = 0; i < data.length; i += 16){
+                    r += data[i];
+                    g += data[i + 1];
+                    b += data[i + 2];
+                    count++;
+                }
+                r = Math.floor(r / count);
+                g = Math.floor(g / count);
+                b = Math.floor(b / count);
+                resolve(`rgb(${r}, ${g}, ${b})`);
+            }
+            catch(e){
+                resolve(null);
+            }
+        });
+    }
+    const colorCache = new Map();
+    movieItems.forEach((img, index) =>{
+        if(img.complete){
+            getImageColor(img).then(color =>{
+                if(color) colorCache.set(index, color);
+            });
+        }
+        else{
+            img.addEventListener('load', () =>{
+                getImageColor(img).then(color =>{
+                    if (color) colorCache.set(index, color);
+                });
+            });
+        }
+    });
+    function updateHeaderColor(){
+        const headerRect = header.getBoundingClientRect();
+        const headerBottom = headerRect.bottom;
+        let closestItem = null;
+        let closestDistance = Infinity;
+        movieItems.forEach((img, index) =>{
+            const item = img.closest('.movie-item');
+            if(!item) return;
+            const rect = item.getBoundingClientRect();
+            const itemTop = rect.top;
+            const itemBottom = rect.bottom;
+            if(itemTop <= headerBottom + 100 && itemBottom >= headerRect.top - 100){
+                const distance = Math.abs(itemTop - headerBottom);
+                if(distance < closestDistance) {
+                    closestDistance = distance;
+                    closestItem = index;
+                }
+            }
+        }); 
+        if(closestItem !== null && colorCache.has(closestItem)){
+            const color = colorCache.get(closestItem);
+            header.style.backgroundColor = color.replace('rgb', 'rgba').replace(')', ', 0.4)');
+        }
+        else{
+            header.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+        }
+    }
+    let ticking = false;
+    window.addEventListener('scroll', () =>{
+        if(!ticking){
+            window.requestAnimationFrame(() =>{
+                updateHeaderColor();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+    updateHeaderColor();
 }
