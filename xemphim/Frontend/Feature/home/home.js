@@ -48,15 +48,19 @@ function createShowtimeBlock(movieData, selectedDate){
     const groupedByCinema = {};
 
     (movieData.showtimes || []).forEach(slot =>{
-        let showTime;
-        if(slot.time && (slot.time.includes('-') || slot.time.includes('T'))){
-            showTime = new Date(slot.time);
+        if(!slot.time) return;
+
+        let timeLabel = "";
+        if(slot.time.includes('T')){
+            const [datePart, timePartFull] = slot.time.split('T');
+            if(datePart !== selectedDate) return;
+            timeLabel = timePartFull.substring(0,5);
         }
-        else if(slot.time){
-            showTime = new Date(`${selectedDate}T${slot.time}:00`);
+        else{
+            timeLabel = slot.time.substring(0,5);
         }
-        if(!showTime || isNaN(showTime.getTime())) return;
-        if(selectedDate === todayStr && showTime <= now) return;
+
+        if(!timeLabel) return;
 
         const cName = slot.cinema_name || slot.cinemaName || "Rạp Hệ Thống";
         const cAddress = slot.address ? ` - ${slot.address}` : "";
@@ -66,11 +70,7 @@ function createShowtimeBlock(movieData, selectedDate){
         }
         groupedByCinema[cinemaKey].push({
             id: slot.showtime_id || slot.id,
-            timeLabel: showTime.toLocaleTimeString('vi-VN', { 
-                hour: '2-digit', 
-                minute: '2-digit', 
-                hour12: false 
-            })
+            timeLabel
         });
     });
 

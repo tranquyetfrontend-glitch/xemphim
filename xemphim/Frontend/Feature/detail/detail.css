@@ -420,15 +420,15 @@ body {
 }
 
 .seat{
-    width: 28px;
-    height: 24px;
+    width: 24px;
+    height: 20px;
     border-radius: 5px 5px 2px 2px;
     cursor: pointer;
     transition: background-color 0.2s;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: bold;
     color: #fff;
-    line-height: 24px;
+    line-height: 20px;
     text-align: center;
 }
 
@@ -513,17 +513,17 @@ body {
         padding: 14px 10px;
     }
     .seat{
-        width: 26px;
-        height: 22px;
-        font-size: 10px;
-        line-height: 22px;
+        width: 22px;
+        height: 18px;
+        font-size: 9px;
+        line-height: 18px;
     }
     .row-label{
-        width: 22px;
-        margin-right: 8px;
+        width: 20px;
+        margin-right: 6px;
     }
     .seat-row{
-        gap: 6px;
+        gap: 4px;
     }
     .screen-line{
         max-width: 420px;
