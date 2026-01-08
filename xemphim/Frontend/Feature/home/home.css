@@ -162,6 +162,8 @@ body {
     margin: 0;
     position: relative;
     cursor: pointer;
+    overflow: hidden;
+    border-radius: 8px;
 }
 
 .movie-item img{
@@ -169,15 +171,15 @@ body {
     height: auto;
     border-radius: 8px;
     object-fit: cover;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     aspect-ratio: 140/200;
     display: block;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transform-origin: center center;
 }
 
 .movie-item:hover img{
-    transform: scale(1.08) translateY(-5px);
-    box-shadow: 0 8px 24px rgba(229, 9, 20, 0.5);
+    transform: scale(1.15);
 }
 
 .movie-item p{
@@ -309,6 +311,8 @@ body {
     transition: opacity 0.3s;
     cursor: pointer;
     border-radius: 6px;
+    pointer-events: none;
+    z-index: 1;
 }
 
 .play-icon{
@@ -321,7 +325,7 @@ body {
 }
 
 .movie-item:hover .overlay{
-    opacity: 1;
+    opacity: 0;
 }
 
 .today-item .info{
