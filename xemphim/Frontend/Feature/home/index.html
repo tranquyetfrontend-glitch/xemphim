@@ -13,11 +13,13 @@
 <body>
     <div class="main-layout">
         <div class="slider-container" id="movieSlider">
-            <div class="layer bg-layer" id="bgLayer"></div>
-            <div class="layer text-layer" id="textLayer">TITLE</div>
-            <div class="layer char-layer" id="charLayer">
-                <img src="" id="charImg" alt="Character">
+            <div class="layer bg-layer bottom" id="bgBottom"></div>
+            <div class="layer bg-layer top active" id="bgTop"></div>
+            <div class="layer text-layer" id="textLayer">
+                <img src="" id="titleLogo" alt="Movie Logo">
             </div>
+            <div class="layer char-layer bottom" id="charBottom"></div>
+            <div class="layer char-layer top active" id="charTop"></div>
             <button class="nav-btn prev-btn" onclick="prevSlide()">&#10094;</button>
             <button class="nav-btn next-btn" onclick="nextSlide()">&#10095;</button>
             <div id="videoWrapper" class="video-hidden">
