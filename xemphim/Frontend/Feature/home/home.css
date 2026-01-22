@@ -868,8 +868,7 @@ body {
     }
 }
 
-/* Container cho các Tab ngày */
-#date-selector {
+#date-selector{
     display: flex;
     gap: 10px;
     padding: 15px 0;
@@ -899,7 +898,6 @@ body {
     border-radius: 2px;
 }
 
-/* Từng Tab ngày */
 .date-tab {
     padding: 10px 18px;
     background-color: #222;
@@ -915,15 +913,14 @@ body {
     min-width: fit-content;
 }
 
-.date-tab:hover {
+.date-tab:hover{
     background-color: #333;
 }
 
-.date-tab:active {
+.date-tab:active{
     transform: scale(0.98);
 }
 
-/* Tab đang được chọn */
 .date-tab.active {
     background-color: #e50914;
     font-weight: 600;
@@ -931,7 +928,7 @@ body {
     box-shadow: 0 2px 8px rgba(229, 9, 20, 0.3);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px){
     #date-selector {
         gap: 8px;
         padding: 12px 0;
@@ -941,16 +938,15 @@ body {
         padding-left: 15px;
         padding-right: 15px;
     }
-    
-    .date-tab {
+    .date-tab{
         padding: 10px 16px;
         font-size: 13px;
         border-radius: 6px;
     }
 }
 
-@media (max-width: 480px) {
-    #date-selector {
+@media (max-width: 480px){
+    #date-selector{
         gap: 6px;
         padding: 10px 0;
         margin-left: -10px;
@@ -958,9 +954,120 @@ body {
         padding-left: 10px;
         padding-right: 10px;
     }
-    
-    .date-tab {
+    .date-tab{
         padding: 8px 14px;
         font-size: 12px;
+    }
+}
+
+.home-grid-layout{
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.movie-list{
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important; /* Luôn là 4 cột trên desktop */
+    gap: 15px !important;
+}
+
+.sidebar-block{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sidebar-right{
+    display: flex;
+    flex-direction: column;
+    padding-top: 10px;
+}
+
+.sidebar-title{
+    font-size: 18px;
+    color: #ffffff;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    border-left: none;
+    padding-left: 0;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.mini-promo-slider{
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #1a1a1a;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    cursor: pointer;
+    margin-bottom: 20px; 
+}
+
+.mini-promo-slider:last-child{
+    margin-bottom: 0;
+}
+
+.promo-track{
+    display: flex;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+}
+
+.promo-item{
+    min-width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.promo-item img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+}
+
+.mini-promo-slider:hover .promo-item img{
+    transform: scale(1.15);
+}
+
+.quick-tools{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.tool-btn{
+    background: #1a1a1a;
+    border: 1px solid #333;
+    color: white;
+    padding: 15px 10px;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 8px;
+    font-size: 13px;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.tool-btn:hover{
+    background: #e50914;
+    border-color: #e50914;
+}
+
+@media (max-width: 992px){
+    .home-grid-layout{
+        grid-template-columns: 1fr;
+    }
+    .movie-list{
+        grid-template-columns: repeat(3, 1fr) !important;
     }
 }

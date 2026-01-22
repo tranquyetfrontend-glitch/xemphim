@@ -79,7 +79,7 @@ function updateSlider(direction){
     void el.charB.offsetWidth;
 
     setTimeout(() =>{
-        console.log("Bước 2: Chạy hiệu ứng mượt (giữ theo bản gốc)");
+        console.log("Bước 2: Chạy hiệu ứng mượt");
         
         el.charB.style.transition = 'transform 2s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 1.5s';
         el.charB.style.transform = 'translateX(0)';
@@ -126,19 +126,26 @@ function playStreamingVideo(url){
     const wrapper = document.getElementById('videoWrapper');
     
     const startPlay = () =>{
+        clearInterval(autoPlayTimer); 
+        
         wrapper.classList.add('show');
         video.play();
         
-        videoDurationTimer = setTimeout(() => {
-            console.log("[VIDEO] Đã đạt 45s, tự động đóng video.");
+        console.log("[VIDEO] Đang phát. Đã tạm dừng AutoPlay để xem đủ 45s.");
+
+        videoDurationTimer = setTimeout(() =>{
+            console.log("[VIDEO] Đã đạt 45s, đóng video và tiếp tục AutoPlay.");
             hideVideo();
+            resetAutoPlay();
+            setTimeout(nextSlide, 2000); 
         }, 45000);
     };
 
-    if (url.endsWith('.mp4')){
+    if(url.endsWith('.mp4')){
         video.src = url;
         video.oncanplay = startPlay;
-    } else if (url.endsWith('.m3u8') && Hls.isSupported()) {
+    }
+    else if(url.endsWith('.m3u8') && Hls.isSupported()){
         const hls = new Hls();
         hls.loadSource(url);
         hls.attachMedia(video);
@@ -157,9 +164,11 @@ function hideVideo(){
 function resetAutoPlay(){
     clearInterval(autoPlayTimer);
     autoPlayTimer = setInterval(() =>{
-        currentIndex = (currentIndex + 1) % movieData.length;
-        updateSlider(1);
-    }, 8000);
+        const wrapper = document.getElementById('videoWrapper');
+        if(!wrapper.classList.contains('show')){
+            nextSlide();
+        }
+    }, 10000);
 }
 
 function nextSlide(){

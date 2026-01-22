@@ -121,7 +121,7 @@ function createShowtimeBlock(movieData, selectedDate){
 
 document.addEventListener("DOMContentLoaded", async function(){
     const thungChuaPhim = document.getElementById("danhSachPhimHan");
-    if(thungChuaPhim) {
+    if(thungChuaPhim){
         try{
             const response = await fetch(API_MOVIE_URL);
             if(!response.ok) throw new Error('Không thể tải danh sách phim từ API.');
@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", async function(){
             thungChuaPhim.innerHTML = "<p style='color:red;'>Lỗi kết nối Server Catalog.</p>";
         }
     }
-
+    initSynchronizedSliders();
     const scheduleContainer = document.getElementById('showtime-list-container');
     if(scheduleContainer) {
         const today = new Date().toISOString().split('T')[0];
@@ -201,4 +201,20 @@ function renderDateTabs(){
         selector.appendChild(tab);
         if(i === 0) renderSchedule(dateString);
     }
+}
+
+function initSynchronizedSliders(){
+    const tracks = document.querySelectorAll('.promo-track');
+    if(tracks.length === 0) return;
+
+    let currentIndex = 0;
+    const maxItems = tracks[0].querySelectorAll('.promo-item').length;
+
+    setInterval(() =>{
+        currentIndex = (currentIndex + 1) % maxItems;
+        
+        tracks.forEach(track =>{
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        });
+    }, 4000);
 }
