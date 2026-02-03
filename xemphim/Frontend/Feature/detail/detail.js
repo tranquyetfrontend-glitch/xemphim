@@ -5,7 +5,7 @@ const API_SHOWTIME_URL = `${GATEWAY_URL}/bookings/showtimes/schedule`;
 
 let countdownInterval;
 let selectedSeats = [];
-const SEAT_PRICE = 80000;
+const SEAT_PRICE = 80000;       
 const VIP_PRICE = 100000;
 const COUPLE_PRICE = 180000;
 let currentMovie = {};

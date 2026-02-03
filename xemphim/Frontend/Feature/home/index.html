@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>web xem phim</title>
+    <title>Cinema Smart - Hệ thống Rạp chiếu phim Thông minh</title>
+    
     <link rel="stylesheet" href="home.css">
     <link rel="stylesheet" href="../common/header-footer.css">
     <link rel="stylesheet" href="../auth/auth.css">
     <link rel="stylesheet" href="slider.css">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="main-layout">
@@ -20,31 +22,53 @@
             </div>
             <div class="layer char-layer bottom" id="charBottom"></div>
             <div class="layer char-layer top active" id="charTop"></div>
+
             <button class="nav-btn prev-btn" onclick="prevSlide()">&#10094;</button>
             <button class="nav-btn next-btn" onclick="nextSlide()">&#10095;</button>
+            
             <div id="videoWrapper" class="video-hidden">
                 <video id="videoPlayer" muted playsinline></video>
                 <div class="video-overlay-shield"></div>
             </div>
         </div>
+
         <div class="side-content">
+            <div id="movie-info-display" class="movie-info-container">
+                <h1 id="info-title">Đang tải...</h1>
+                <div class="info-meta">
+                    <span id="info-genre">...</span>
+                    <span id="info-country">...</span>
+                    <span id="info-duration">...</span>
+                </div>
+                <div class="info-details">
+                    <p><strong>Đạo diễn:</strong> <span id="info-director">...</span></p>
+                    <p><strong>Diễn viên:</strong> <span id="info-actors">...</span></p>
+                </div>
+                <p id="info-description" class="info-description">
+                    Vui lòng chờ trong giây lát...
+                </p>
+                <div class="info-rating">
+                    <div class="stars">★★★★★</div>
+                    <span id="info-release">...</span>
+                </div>
+                <button class="btn-buy-ticket">
+                    <i class="fas fa-ticket-alt"></i> Mua vé ngay
+                </button>
+            </div>
         </div>
     </div>
+
     <div class="main-wrapper">
         <div class="home-grid-layout">
-            <div class="left-content">
-                <section class="movie-section" id="lich-chieu-section">
-                    <div class="section-header">
-                        <h2>Phim đang chiếu</h2>
-                        <a href="../home/lich-chieu.html" class="see-all-link">Xem tất cả</a>
-                    </div>
-                    <div class="movie-list" id="danhSachPhimHan">
-                        </div>
-                </section>
+            
+            <div class="left-content" id="home-blocks-container">
+                <p style="text-align:center; padding: 20px; color: #666;">Đang tải danh sách phim...</p>
             </div>
+
             <aside class="sidebar-right">
                 <div class="sidebar-block">
                     <h3 class="sidebar-title">Khuyến mãi</h3>
+                    
                     <div class="mini-promo-slider" id="promo1">
                         <div class="promo-track">
                             <div class="promo-item"><img src="images/km1.png" alt="KM 1"></div>
@@ -52,31 +76,54 @@
                             <div class="promo-item"><img src="images/km3.png" alt="KM 3"></div>
                         </div>
                     </div>
+
                     <div class="mini-promo-slider" id="promo2">
                         <div class="promo-track">
-                            <div class="promo-item"><img src="images/km4.png" alt="KM 1"></div>
-                            <div class="promo-item"><img src="images/km5.png" alt="KM 2"></div>
-                            <div class="promo-item"><img src="images/km6.png" alt="KM 3"></div>
+                            <div class="promo-item"><img src="images/km4.png" alt="KM 4"></div>
+                            <div class="promo-item"><img src="images/km5.png" alt="KM 5"></div>
+                            <div class="promo-item"><img src="images/km6.png" alt="KM 6"></div>
                         </div>
                     </div>
+
                     <div class="mini-promo-slider" id="promo3">
                         <div class="promo-track">
-                            <div class="promo-item"><img src="images/km7.png" alt="KM 1"></div>
-                            <div class="promo-item"><img src="images/km8.png" alt="KM 2"></div>
-                            <div class="promo-item"><img src="images/km9.png" alt="KM 2"></div>
+                            <div class="promo-item"><img src="images/km7.png" alt="KM 7"></div>
+                            <div class="promo-item"><img src="images/km8.png" alt="KM 8"></div>
+                            <div class="promo-item"><img src="images/km9.png" alt="KM 9"></div>
                         </div>
                     </div>
                 </div>
             </aside>
         </div>
     </div>
+
+    <div id="chatbot-widget">
+        <div class="chat-header">
+            <span>Trợ lý vé phim AI</span>
+            <button onclick="toggleChat()" style="background:none;border:none;color:white;font-size:20px;cursor:pointer;">&times;</button>
+        </div>
+        <div class="chat-body" id="chat-body">
+            <div class="message bot">Chào bạn! Tôi là AI hỗ trợ đặt vé. Bạn muốn tìm phim gì hôm nay?</div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="user-input" placeholder="Hỏi lịch chiếu, giá vé..." onkeypress="handleEnter(event)">
+            <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+    <button class="chat-toggle-btn" onclick="toggleChat()">
+        <i class="fas fa-comment-dots"></i>
+    </button>
+
     <div id="auth-modals-container"></div>
+
     <script src="../config.js"></script>
     <script src="../../Share/data.js"></script>
-    <script src="home.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script> 
+    
     <script src="../common/header-footer.js"></script>  
     <script src="../auth/auth.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script> 
+
     <script src="slider.js"></script>
+    <script src="home.js"></script>
 </body>
 </html>

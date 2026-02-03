@@ -37,6 +37,49 @@ const movieData = [
     }
 ];
 
+const movieDetails =[
+    {
+        title: "TAXI DRIVER 3",
+        genre: "Hành động, Tội phạm, Kịch tính",
+        director: "Park Joon-woo",
+        actors: "Lee Je-hoon, Pyo Ye-jin, Kim Eui-sung",
+        desc: "Tiếp nối thành công của 2 phần trước, Kim Do-gi cùng biệt đội Taxi Cầu Vồng trở lại để thực thi công lý cho những nạn nhân mà pháp luật chưa chạm tới. Những vụ án gai góc và những pha hành động mãn nhãn đang chờ đợi.",
+        release: "23/01/2026"
+    },
+    {
+        title: "AVATAR: FIRE AND ASH",
+        genre: "Hành động, Viễn tưởng, Phiêu lưu",
+        director: "James Cameron",
+        actors: "Sam Worthington, Zoe Saldaña, Sigourney Weaver",
+        desc: "Phần 3 của siêu phẩm Avatar đưa chúng ta khám phá một bộ tộc Na'vi mới - 'Người Tro'. Jake Sully và Neytiri phải đối mặt với những thử thách khắc nghiệt hơn khi sự cân bằng của Pandora bị đe dọa bởi lửa và sự thù hận.",
+        release: "19/12/2025"
+    },
+    {
+        title: "ZOOTOPIA 2",
+        genre: "Hoạt hình, Hài hước, Phiêu lưu",
+        director: "Byron Howard, Rich Moore",
+        actors: "Ginnifer Goodwin, Jason Bateman",
+        desc: "Cặp đôi cảnh sát thỏ Judy Hopps và cáo Nick Wilde chính thức trở lại trong một vụ án mới đầy hóc búa. Thành phố Zootopia sẽ mở rộng thêm những khu vực chưa từng được tiết lộ với những loài vật thú vị.",
+        release: "26/11/2025"
+    },
+    {
+        title: "THE BATMAN",
+        genre: "Hành động, Tội phạm, Bí ẩn",
+        director: "Matt Reeves",
+        actors: "Robert Pattinson, Zoë Kravitz, Paul Dano",
+        desc: "Trong năm thứ hai chống lại tội phạm, Batman khám phá ra sự thối nát tại thành phố Gotham. Anh dấn thân vào một trò chơi mèo đuổi chuột với tên sát nhân hàng loạt Riddler để bảo vệ công lý.",
+        release: "04/03/2022"
+    },
+    {
+        title: "SPIDER-MAN: NO WAY HOME",
+        genre: "Hành động, Viễn tưởng, Đa vũ trụ",
+        director: "Jon Watts",
+        actors: "Tom Holland, Zendaya, Benedict Cumberbatch",
+        desc: "Sau khi danh tính bị tiết lộ, Peter Parker nhờ đến sự giúp đỡ của Doctor Strange. Tuy nhiên, một sai lầm trong bùa chú đã mở ra cánh cửa đa vũ trụ, khiến những kẻ thù nguy hiểm nhất từ các thế giới khác tràn vào.",
+        release: "17/12/2021"
+    }
+];
+
 let currentIndex = 0;
 let isAnimating = false;
 let autoPlayTimer;
@@ -46,6 +89,8 @@ let videoDurationTimer;
 function updateSlider(direction){
     if (isAnimating) return;
     isAnimating = true;
+    
+    updateMovieInfo(currentIndex);
 
     clearTimeout(videoTimer);
     clearTimeout(videoDurationTimer);
@@ -171,12 +216,37 @@ function resetAutoPlay(){
     }, 10000);
 }
 
+function updateMovieInfo(index){
+    const data = movieDetails[index];
+    if (!data) return;
+
+    const container = document.querySelector('.side-content');
+    const infoDisplay = document.getElementById('movie-info-display');
+    
+    container.style.opacity = '0';
+    container.style.transform = 'translateX(20px)';
+    container.style.transition = 'all 0.5s ease';
+
+    setTimeout(() =>{
+        document.getElementById('info-title').innerText = data.title;
+        document.getElementById('info-genre').innerText = data.genre;
+        document.getElementById('info-director').innerText = data.director;
+        document.getElementById('info-actors').innerText = data.actors;
+        document.getElementById('info-description').innerText = data.desc;
+        document.getElementById('info-release').innerText = `Khởi chiếu: ${data.release}`;
+
+        container.style.opacity = '1';
+        container.style.transform = 'translateX(0)';
+    }, 400); 
+}
+
 function nextSlide(){
     if(!isAnimating){
         currentIndex = (currentIndex + 1) % movieData.length;
         updateSlider(1);
     }
 }
+
 function prevSlide(){
     if(!isAnimating){
         currentIndex = (currentIndex - 1 + movieData.length) % movieData.length;
