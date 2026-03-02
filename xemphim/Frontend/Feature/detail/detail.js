@@ -380,13 +380,22 @@ document.addEventListener("DOMContentLoaded", async function(){
             </div>
             <div class="detail-info">
                 <h1>${phim.title}</h1>
-                <p><strong>Thời Lượng:</strong> ${phim.duration_minutes} phút</p>
-                <p><strong>Khởi Chiếu:</strong> ${new Date(phim.release_date).toLocaleDateString('vi-VN')}</p>
+                <div class="info-meta" style="margin-bottom: 15px; color: #aaa;">
+                    <span>${phim.genre || 'Đang cập nhật'}</span> | 
+                    <span>${phim.duration_minutes} phút</span> | 
+                    <span>Khởi chiếu: ${new Date(phim.release_date).toLocaleDateString('vi-VN')}</span>
+                </div>
+                
+                <div class="info-details" style="margin-bottom: 15px;">
+                    <p><strong>Đạo diễn:</strong> <span style="color: #fff;">${phim.director || 'Đang cập nhật'}</span></p>
+                    <p><strong>Diễn viên:</strong> <span style="color: #fff;">${phim.actors || 'Đang cập nhật'}</span></p>
+                </div>
+
                 <div class="synopsis">
                     <p>${phim.description || 'Chưa có mô tả nội dung cho phim này.'}</p>
                 </div>
                 <div class="detail-buttons">
-                    <button class="btn btn-primary">Chi tiết nội dung</button>
+                    <button class="btn btn-primary">Mua vé ngay</button>
                     ${phim.trailer_url ? `<a href="${phim.trailer_url}" target="_blank" class="btn btn-secondary">Xem trailer</a>` : ''}
                 </div>
             </div>

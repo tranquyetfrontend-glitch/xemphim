@@ -9,6 +9,9 @@ console.log("   - Schema:", process.env.DB_SCHEMA);
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false 
+    }
 });
 
 pool.on('error', (err) =>{
@@ -17,7 +20,9 @@ pool.on('error', (err) =>{
 });
 
 pool.on('connect', (client) =>{
-    client.query(`SET search_path TO ${process.env.DB_SCHEMA}, public`);
+    if (process.env.DB_SCHEMA) {
+        client.query(`SET search_path TO ${process.env.DB_SCHEMA}, public`);
+    }
 });
 
 export default pool;

@@ -11,19 +11,38 @@ const HomeBlockType = {
 
 document.addEventListener("DOMContentLoaded", async function(){
     initSynchronizedSliders();
-
     initChatbot();
 
-    try{
+    try {
         const container = document.getElementById('home-blocks-container');
-        if (container){
-            console.log("Đang tải dữ liệu 10 khối...");
-            const data = getMockData(); 
+        if (container) {
+            container.innerHTML = '<p style="text-align:center; padding: 20px; color: #fff;"><i class="fas fa-spinner fa-spin"></i> Đang kết nối tới Database...</p>';
+            const API_URL = `${GATEWAY_URL}/catalog/home-composite`;
+            console.log("Đang gọi API lấy 10 khối từ:", API_URL);
+            
+            const response = await fetch(API_URL);
+            
+            if (!response.ok) {
+                throw new Error(`Lỗi Server: ${response.status} - Không thể lấy dữ liệu từ Backend`);
+            }
+            
+            const data = await response.json();
             renderHomeDynamic(data);
         }
     }
-    catch(error){
-        console.error("Lỗi tải trang chủ:", error);
+    catch(error) {
+        console.error("Lỗi chí mạng:", error);
+        const container = document.getElementById('home-blocks-container');
+        if (container) {
+            container.innerHTML = `
+                <div style="text-align:center; padding: 50px; color: #ff4444; background: #222; border-radius: 10px; margin: 20px;">
+                    <h2>⚠️ Mất kết nối tới Cơ sở dữ liệu</h2>
+                    <p>${error.message}</p>
+                    <p>Vui lòng kiểm tra lại Backend (API Gateway và Catalog Service đã bật chưa?).</p>
+                    <p>Bấm F12 -> tab Console để xem chi tiết lỗi.</p>
+                </div>
+            `;
+        }
     }
 });
 

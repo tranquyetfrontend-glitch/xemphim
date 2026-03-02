@@ -4,6 +4,7 @@ import * as dotenv from 'dotenv';
 import movieRouter from '../src/routers/movie.router.js';
 import roomRouter from '../src/routers/room.router.js';
 import productRouter from '../src/routers/product.router.js';
+import homeRouter from '../src/routers/home.router.js';
 
 dotenv.config();
 const app = express();
@@ -27,6 +28,7 @@ app.use(express.json());
 app.use('/api/movies', movieRouter);
 app.use('/api/rooms', roomRouter);
 app.use('/api', productRouter);
+app.use('/api', homeRouter);
 app.listen(PORT,()=>{
     console.log(`Catalog Service đang chạy trên cổng: ${PORT}`);
 });
